@@ -1,28 +1,63 @@
-﻿ <div class="form-group col-md-5">
-    <div class="form-row">
-        <label for="inputAddress">Current Address</label>
-        <textarea type="text" class="form-control" placeholder="Address Line"></textarea>
+﻿<div class="mb-sm-3 form-group">
+    <div class="form-row col">
+        <div class="pl-0 span col-5">
+            <div class="pl-0 col">
+                <div class="span">
+                    <label class="col-form-label">Pincode</label>
+                    <div class="input-group mb-3">
+                        <input id="txt-pincode" type="text" class="form-control">
+                        <input id="hidden-pincode-Id" type="hidden" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="span">
+                    <label for="inputAddress">Address</label>
+                    <textarea type="text" class="form-control" placeholder="House No / Building / Society / Street / Landmark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="pl-0 span col-7">
+            <div class="form-row">
+                <label class="col-form-label">Area Details</label>
+            </div>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">Locality </h5>:
+                <p class="d-inline">Gondhale Nagar</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">City </h5>:
+                <p class="d-inline">Pune</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">Tehsil </h5>:
+                <p class="d-inline">Pune</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">District </h5>:
+                <p class="d-inline">Pune</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">State </h5>:
+                <p class="d-inline">MAHARASHTRA</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">Country </h5>:
+                <p class="d-inline">INDIA</p>
+            </span>
+
+            <span class="mb-sm-1 badge badge-light">
+                <h5 class="d-inline">Pincode </h5>:
+                <p class="d-inline">411028</p>
+            </span>
+        </div>
     </div>
-    <div class="form-row pt-2">
-        <div class="form-group col-md-5">
-            <label for="inputCity">City</label>
-            <input type="text" class="form-control" placeholder="City" disabled>
-        </div>
-        <div class="form-group col-md-5">
-            <label for="inputState">State</label>
-            <input type="text" class="form-control" placeholder="State" disabled>
-        </div>
-        <div class="ui-widget">
-            <label for="birds">Birds: </label>
-            <input id="birds">
-        </div>
-        <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-            Result:
-            <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-        </div>
-        <div class="ui-widget">
-            <label for="tags">Tags: </label>
-            <input id="tags">
-        </div>
-    </div>
+
 </div>

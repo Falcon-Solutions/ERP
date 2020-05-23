@@ -8,11 +8,11 @@
 @section Styles{
     <link href="~/Content/libs/css/CustomDatePicker.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.css" />
-
+    <link href="~/Content/vendor/fonts/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="~/Content/vendor/jquery/jquery-ui.css" rel="stylesheet" />
     <style>
-        .ui-autocomplete-loading {
-            background: white url("../../Content/images/ui-anim_basic_16x16.gif") right center no-repeat;
+        .row-fluid [class*="span"] {
+            margin-left: 0;
         }
     </style>
 }
@@ -127,25 +127,37 @@
                 </div>
             </div>
             <!-- Row 2 end -->
-            <!-- Row 3 begin : Current address and permanent address-->
-            <div class="form-row">
-                @*<div class="form-group col-md-4">
-                        @Html.Label("Current Address")
-                        <div>
-                            @Html.TextAreaFor(model => model.CurrentAddress, 5, 1, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
-                            @Html.ValidationMessageFor(model => model.CurrentAddress, "", new { @class = "text-danger" })
+            <!-- Row 3 begin : Current address-->
+            <div class="form-row mb-sm-3">
+                <div class="tab-regular col-8">
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li id="list-item-curnAddr" class="nav-item">
+                            <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Current Address</a>
+                        </li>
+                        <li id="list-item-permAddr" class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Permenent Address</a>
+                        </li>
+                    </ul>
+                    <div class="pb-2 pl-2 pt-3 tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            @{
+                                Html.RenderPartial("_Address");
+                            }
+                            <div class="form-group">
+                                <div class="form-row col">
+                                    <label class="custom-control custom-checkbox">
+                                        <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Copy to Permenent</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            @{
+                                Html.RenderPartial("_Address");
+                            }
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        @Html.Label("Permanent Address")
-                        <div>
-                            @Html.TextAreaFor(model => model.PeremenantAddress, 5, 1, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
-                            @Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
-                @{
-                    Html.RenderPartial("_Address");
-                }
+                </div>
             </div>
             <!-- Row 3 end -->
             <!-- Row 4 begin :  religion selection, caste selection, category selection and bloodgroup seelection control -->
@@ -277,23 +289,58 @@
     @*<script src="~/Content/libs/js/postal-code.js"></script>*@
     <script>
         $(document).ready(function () {
-            function log(message) {
-                $("<div>").text(message).prependTo("#log");
-                $("#log").scrollTop(0);
-            }
 
-            $("#birds").autocomplete({
+            $('#chkbx-copy-to-perm').change(function () {
+                if (this.checked) {
+                    $('#list-item-permAddr').hide();
+                }
+                else {
+                    $('#list-item-permAddr').show();
+                }
+            });
+
+            $("#pin-code").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: '@(Url.Action("SearchPostal", "Common"))',
-                        dataType: "text",
+                        dataType: "jsonp",
                         data: {
-                            postalCode: $("#birds").val()
+                            postalCode: $("#pin-code").val()
                         },
                         success: function (data) {
-
+                            data = JSON.parse(data);
                             console.log(data);
-                            response(data);
+
+                            let pincodes = "[{asdwad},{awdasd}]";
+
+                            //data.forEach(function (element) {
+                            //    //console.log(element);
+                            //    //Area: "Hadpsar I.E."
+                            //    //City: "Pune"
+                            //    //Country: "INDIA"
+                            //    //District: "Pune"
+                            //    //Id: 63889
+                            //    //Pin: "411013"
+                            //    //State: "MAHARASHTRA"
+                            //    //Tehsil: "Pune City"
+
+
+
+                            //    pincodes.push(element.Id + ", "
+                            //        + element.Area + ", "
+                            //        + element.City + ", "
+                            //        + element.Tehsil + ", "
+                            //        + element.District + ", "
+                            //        + element.State + ", "
+                            //        + element.Country + ", "
+                            //        + element.Pin + ", ");
+
+
+                            //});
+
+                            console.log(pincodes);
+
+                            response(pincodes);
                         }
                     });
                 },
@@ -303,5 +350,21 @@
                 }
             });
         });
+
+
+        $(document).ready(function () {
+            //set initial state.
+            $('#textbox1').val(this.checked);
+
+            $('#checkbox1').change(function () {
+                if (this.checked) {
+                    var returnVal = confirm("Are you sure?");
+                    $(this).prop("checked", returnVal);
+                }
+                $('#textbox1').val(this.checked);
+            });
+        });
+
+
     </script>
 }
