@@ -7,12 +7,29 @@
 }
 @section Styles{
     <link href="~/Content/libs/css/CustomDatePicker.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.css" />
+    <link href="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+    <link href="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.css" rel="stylesheet" />
     <link href="~/Content/vendor/fonts/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="~/Content/vendor/jquery/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/vendor/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
+    <link href="~/Content/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <style>
-        .row-fluid [class*="span"] {
-            margin-left: 0;
+        .pin-select span {
+            width: 100% !important;
+        }
+
+        /*Make scrollbar hidden*/
+        html {
+            overflow: scroll;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent; /* make scrollbar transparent */
+        }
+
+        .fix-min-height {
+            min-height:300px !important;
         }
     </style>
 }
@@ -51,221 +68,454 @@
         @Html.AntiForgeryToken()
 
         <!-- Form structure begin -->
-        <div class="form-horizontal">
-            <!-- All error messages and validation  messages will show here -->
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <!-- Row 1 begin : First name, middle name, last name, class selection and gender selection controls -->
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.FirstName)
-                    <div>
-                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.MiddleName)
-                    <div>
-                        @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.LastName)
-                    <div>
-                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-1">
-                    @Html.LabelFor(model => model.ClassId)
-                    <div>
-                        @Html.DropDownList("ClassList", new SelectList(ViewBag.ClassMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-1">
-                    @Html.Label("Gender")
-                    <div>
-                        @Html.DropDownList("Gender", new SelectList(ViewBag.GenderMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 1 end -->
-            <!-- Row 2 begin : DoB date picker, phone number, adhar card number, email -->
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    @Html.Label("DoB")
-                    <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                        @Html.TextBoxFor(model => model.DoB, new { htmlAttributes = new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#datetimepicker4" } })
-                        <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.Phone)
-                    <div>
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.AadharId)
-                    <div>
-                        @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.LabelFor(model => model.Email)
-                    <div>
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 2 end -->
-            <!-- Row 3 begin : Current address-->
-            <div class="form-row mb-sm-3">
-                <div class="tab-regular col-8">
-                    <ul class="nav nav-tabs " id="myTab" role="tablist">
-                        <li id="list-item-curnAddr" class="nav-item">
-                            <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Current Address</a>
-                        </li>
-                        <li id="list-item-permAddr" class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Permenent Address</a>
-                        </li>
-                    </ul>
-                    <div class="pb-2 pl-2 pt-3 tab-content" id="myTabContent">
-                        <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            @{
-                                Html.RenderPartial("_Address");
-                            }
-                            <div class="form-group">
-                                <div class="form-row col">
-                                    <label class="custom-control custom-checkbox">
-                                        <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Copy to Permenent</span>
-                                    </label>
+        <!-- ============================================================== -->
+        <!-- vertical tabs  -->
+        <!-- ============================================================== -->
+        
+            <div class="tab-vertical col-10">
+                <ul class="nav nav-tabs" id="myTab3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="basic-details-tab" data-toggle="tab" href="#basic-details" role="tab" aria-controls="basic-details" aria-selected="true">Basic Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="address-details-tab" data-toggle="tab" href="#address-details" role="tab" aria-controls="address-details" aria-selected="false">Address  Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="parents-details-tab" data-toggle="tab" href="#parents-details" role="tab" aria-controls="parents-details" aria-selected="false">Parent Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="other-details-tab" data-toggle="tab" href="#other-details" role="tab" aria-controls="other-details" aria-selected="false">Other</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade fix-min-height show active" id="basic-details" role="tabpanel" aria-labelledby="basic-details-tab">
+                        <div class="form-row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.FirstName)
+                                <div>
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.MiddleName)
+                                <div>
+                                    @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.LastName)
+                                <div>
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            @{
-                                Html.RenderPartial("_Address");
-                            }
+                        <div class="form-row">
+                            <div class="form-group col-5">
+                                @Html.Label("DoB")
+                                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                    @Html.TextBoxFor(model => model.DoB, new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#datetimepicker4" })
+                                    <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-2">
+                                @Html.Label("Gender")
+                                <div>
+                                    @Html.DropDownList("Gender", new SelectList(ViewBag.GenderMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-2">
+                                @Html.Label("Blood Group")
+                                <div>
+                                    @Html.DropDownList("BloodGroup", new SelectList(ViewBag.BloodGrpMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-3">
+                                @Html.Label("Class Applying")
+                                <div>
+                                    @Html.DropDownList("ClassList", new SelectList(ViewBag.ClassMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Phone)
+                                <div>
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.Email)
+                                <div>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.AadharId)
+                                <div>
+                                    @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade fix-min-height" id="address-details" role="tabpanel" aria-labelledby="address-details-tab">
+                        <div class="form-row">
+                            <div id="card-current-address" class="card col-5">
+                                <div class="card-header d-flex">
+                                    <h4 class="mb-0">Current Addresss</h4>
+                                    <div class="dropdown ml-auto">
+                                        <a class="toolbar" href="#" role="button" id="dropdownMenuLink5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Mark this as default communication address"><i class="fas fa-at"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        Html.RenderPartial("_Address");
+                                    }
+                                    <div class="">
+                                        <div class="form-row">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Permanent address is same as current address</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+
+                            </div>
+                            <div id="card-permanent-address" class="card col-5">
+                                <div class="card-header d-flex">
+                                    <h4 class="mb-0">Permenant Addresss</h4>
+                                    <div class="dropdown ml-auto">
+                                        <a class="toolbar" href="#" role="button" id="dropdownMenuLink5" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Mark this as default communication address"><i class="fas fa-at"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        Html.RenderPartial("_Address");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade fix-min-height" id="parents-details" role="tabpanel" aria-labelledby="parents-details-tab">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Parent Name")
+                                <div>
+                                    @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                @Html.Label("Parent Phone")
+                                <div>
+                                    @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                @Html.Label("Parent Email")
+                                <div>
+                                    @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                @Html.Label("Parent Relationship")
+                                <div>
+                                    @Html.EditorFor(model => model.ParentRelationship, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("Parent Occupation")
+                                <div>
+                                    @Html.EditorFor(model => model.ParentOccupation, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade fix-min-height" id="other-details" role="tabpanel" aria-labelledby="other-details-tab">
+                        <div class="form-row">
+                            <div class="form-group col-3">
+                                @Html.Label("Religion")
+                                <div>
+                                    @Html.DropDownList("Religion", new SelectList(ViewBag.ReligionMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-3">
+                                @Html.Label("Caste")
+                                <div>
+                                    @Html.DropDownList("Caste", new SelectList(ViewBag.CasteMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-3">
+                                @Html.Label("Category")
+                                <div>
+                                    @Html.DropDownList("Category", new SelectList(ViewBag.CategoryMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                @Html.Label("Notes(if any)")
+                                <div>
+                                    @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { @class= "form-control" })
+                                    @Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Row 3 end -->
-            <!-- Row 4 begin :  religion selection, caste selection, category selection and bloodgroup seelection control -->
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    @Html.Label("Religion")
-                    <div>
-                        @Html.DropDownList("Religion", new SelectList(ViewBag.ReligionMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
+        
+        <!-- ============================================================== -->
+        <!-- end basic tabs  -->
+        <!-- ============================================================== -->
+
+        @*<div class="form-horizontal">
+                <!-- All error messages and validation  messages will show here -->
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <!-- Row 1 begin : First name, middle name, last name, class selection and gender selection controls -->
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.FirstName)
+                        <div>
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.MiddleName)
+                        <div>
+                            @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.LastName)
+                        <div>
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-1">
+                        @Html.LabelFor(model => model.ClassId)
+                        <div>
+                            @Html.DropDownList("ClassList", new SelectList(ViewBag.ClassMaster, "Text", "Value"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-1">
+                        @Html.Label("Gender")
+                        <div>
+                            @Html.DropDownList("Gender", new SelectList(ViewBag.GenderMaster, "Text", "Value"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 1 end -->
+                <!-- Row 2 begin : DoB date picker, phone number, adhar card number, email -->
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        @Html.Label("DoB")
+                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                            @Html.TextBoxFor(model => model.DoB, new { htmlAttributes = new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#datetimepicker4" } })
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.Phone)
+                        <div>
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.AadharId)
+                        <div>
+                            @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.LabelFor(model => model.Email)
+                        <div>
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 2 end -->
+                <!-- Row 3 begin : Current address-->
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <div class="tab-regular">
+                            <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                <li id="list-item-curnAddr" class="nav-item">
+                                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Current</a>
+                                </li>
+                                <li id="list-item-permAddr" class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Permenent</a>
+                                </li>
+                            </ul>
+                            <div class="pb-2 pl-2 pr-1 pt-3 tab-content" id="myTabContent">
+                                <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <!--Here -->
+                                    @{
+                                        Html.RenderPartial("_Address");
+                                    }
+                                    <div class="">
+                                        <div class="form-row col">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Copy to Permenent</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    @{
+                                        Html.RenderPartial("_Address");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            @Html.Label("Religion")
+                            <div>
+                                @Html.DropDownList("Religion", new SelectList(ViewBag.ReligionMaster, "Text", "Value"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Caste")
+                            <div>
+                                @Html.DropDownList("Caste", new SelectList(ViewBag.CasteMaster, "Text", "Value"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Category")
+                            <div>
+                                @Html.DropDownList("Category", new SelectList(ViewBag.CategoryMaster, "Text", "Value"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Blood Group")
+                            <div>
+                                @Html.DropDownList("BloodGroup", new SelectList(ViewBag.BloodGrpMaster, "Text", "Value"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 3 end -->
+                <!-- Row 4 begin :  religion selection, caste selection, category selection and bloodgroup seelection control -->
+                <!-- Row 4 end -->
+                <!-- Row 5 begin :  parent name, parent phone, parent email controls -->
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        @Html.Label("Parent Name")
+                        <div>
+                            @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        @Html.Label("Parent Phone")
+                        <div>
+                            @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        @Html.Label("Parent Email")
+                        <div>
+                            @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 5 end -->
+                <!-- Row 6 begin :  parent relationship, parent occupation controls -->
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        @Html.Label("Parent Relationship")
+                        <div>
+                            @Html.EditorFor(model => model.ParentRelationship, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        @Html.Label("Parent Occupation")
+                        <div>
+                            @Html.EditorFor(model => model.ParentOccupation, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 6 end -->
+                <!-- Row 7 begin :  notes controls  -->
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        @Html.Label("Notes(if any)")
+                        <div>
+                            @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
+                            @Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 7 end -->
+                <!-- Row 8 begin :  create and back button  -->
+                <div class="form-row">
+                    <div class="form-group col-md-1">
+                        <div>
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <div>
+                            @Html.ActionLink("Back to List", "List", null, new { @class = "btn btn-primary" })
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group col-md-2">
-                    @Html.Label("Caste")
-                    <div>
-                        @Html.DropDownList("Caste", new SelectList(ViewBag.CasteMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group col-md-2">
-                    @Html.Label("Category", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div>
-                        @Html.DropDownList("Category", new SelectList(ViewBag.CategoryMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group col-md-2">
-                    @Html.Label("Blood Group")
-                    <div>
-                        @Html.DropDownList("BloodGroup", new SelectList(ViewBag.BloodGrpMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 4 end -->
-            <!-- Row 5 begin :  parent name, parent phone, parent email controls -->
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    @Html.Label("Parent Name")
-                    <div>
-                        @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group col-md-2">
-                    @Html.Label("Parent Phone")
-                    <div>
-                        @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group col-md-3">
-                    @Html.Label("Parent Email")
-                    <div>
-                        @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 5 end -->
-            <!-- Row 6 begin :  parent relationship, parent occupation controls -->
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    @Html.Label("Parent Relationship")
-                    <div>
-                        @Html.EditorFor(model => model.ParentRelationship, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    @Html.Label("Parent Occupation")
-                    <div>
-                        @Html.EditorFor(model => model.ParentOccupation, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 6 end -->
-            <!-- Row 7 begin :  notes controls  -->
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    @Html.Label("Notes(if any)")
-                    <div>
-                        @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
-                        @Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <!-- Row 7 end -->
-            <!-- Row 8 begin :  create and back button  -->
-            <div class="form-row">
-                <div class="form-group col-md-1">
-                    <div>
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </div>
-                <div class="form-group col-md-1">
-                    <div>
-                        @Html.ActionLink("Back to List", "List", null, new { @class = "btn btn-primary" })
-                    </div>
-                </div>
-            </div>
-
-        </div>
+            </div>*@
         <!-- Form structure end -->
     }
 
@@ -280,91 +530,23 @@
 <!-- end wrapper  -->
 <!-- ============================================================== -->
 @section Scripts{
+    <script src="~/Content/vendor/bootstrap-select/js/bootstrap-select.js"></script>
     <script src="~/Content/vendor/datepicker/moment.js"></script>
     <script src="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="~/Content/vendor/datepicker/datepicker.js"></script>
-
     <script src="~/Content/vendor/jquery/jquery-1.12.4.js"></script>
     <script src="~/Content/vendor/jquery/jquery-ui-1.12.1.js"></script>
-    @*<script src="~/Content/libs/js/postal-code.js"></script>*@
     <script>
         $(document).ready(function () {
-
-            $('#chkbx-copy-to-perm').change(function () {
-                if (this.checked) {
-                    $('#list-item-permAddr').hide();
+            $('#chkbx-copy-to-perm').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#card-permanent-address').hide();
+                    console.log("Checkbox is checked.");
                 }
-                else {
-                    $('#list-item-permAddr').show();
-                }
-            });
-
-            $("#pin-code").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '@(Url.Action("SearchPostal", "Common"))',
-                        dataType: "jsonp",
-                        data: {
-                            postalCode: $("#pin-code").val()
-                        },
-                        success: function (data) {
-                            data = JSON.parse(data);
-                            console.log(data);
-
-                            let pincodes = "[{asdwad},{awdasd}]";
-
-                            //data.forEach(function (element) {
-                            //    //console.log(element);
-                            //    //Area: "Hadpsar I.E."
-                            //    //City: "Pune"
-                            //    //Country: "INDIA"
-                            //    //District: "Pune"
-                            //    //Id: 63889
-                            //    //Pin: "411013"
-                            //    //State: "MAHARASHTRA"
-                            //    //Tehsil: "Pune City"
-
-
-
-                            //    pincodes.push(element.Id + ", "
-                            //        + element.Area + ", "
-                            //        + element.City + ", "
-                            //        + element.Tehsil + ", "
-                            //        + element.District + ", "
-                            //        + element.State + ", "
-                            //        + element.Country + ", "
-                            //        + element.Pin + ", ");
-
-
-                            //});
-
-                            console.log(pincodes);
-
-                            response(pincodes);
-                        }
-                    });
-                },
-                minLength: 6,
-                select: function (event, ui) {
-                    log("Selected: " + ui.item.value + " aka " + ui.item.id);
+                else if ($(this).prop("checked") == false) {
+                    $('#card-permanent-address').show();
                 }
             });
         });
-
-
-        $(document).ready(function () {
-            //set initial state.
-            $('#textbox1').val(this.checked);
-
-            $('#checkbox1').change(function () {
-                if (this.checked) {
-                    var returnVal = confirm("Are you sure?");
-                    $(this).prop("checked", returnVal);
-                }
-                $('#textbox1').val(this.checked);
-            });
-        });
-
-
     </script>
 }

@@ -49,6 +49,10 @@ namespace FalconSchool.Controllers
             ViewBag.ClassMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.ClassMaster);
             ViewBag.SectionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.SectionMaster);
             ViewBag.GenderMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.GenderMaster);
+            ViewBag.CityMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CityMaster);
+            ViewBag.StateMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.StateMaster);
+            ViewBag.CountryMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CountryMaster);
+
 
             ViewBag.FormAction = "Add";
 

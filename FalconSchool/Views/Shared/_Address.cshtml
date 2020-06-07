@@ -1,85 +1,42 @@
-﻿<div class="mb-sm-3 form-group">
-    <div class="form-row col">
-        <div class="pl-0 span col-5">
-            <div class="pl-0 col">
-                <div class="span">
-                    <label class="col-form-label">Pincode</label>
-                    <div class="input-group mb-3">
-                        <input id="txt-pincode" type="text" class="form-control">
-                        <input id="hidden-pincode-Id" type="hidden" class="form-control">
-                        <div class="input-group-append">
-                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                <i class="fas fa-search"></i>
-                            </a>
-                            @*<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"></button>*@
-                        </div>
-                    </div>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Select Your Locality</h5>
-                                    <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </a>
-                                </div>
-                                <div class="modal-body">
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                                    <a href="#" class="btn btn-primary">Save changes</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="span">
-                    <label for="inputAddress">Address</label>
-                    <textarea type="text" class="form-control" placeholder="House No / Building / Society / Street / Landmark"></textarea>
-                </div>
-            </div>
+﻿
+
+<div class="form-row">
+    <div class="form-group col">
+        <label class="col-form-label">Address</label>
+        <textarea id="txt-Area-Details" class="form-control" rows="3"></textarea>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col">
+        @Html.Label("Country")
+        <div>
+            @Html.DropDownList("Dropdown_Country", new SelectList(ViewBag.CountryMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
         </div>
-        <div class="pl-0 span col-7">
-            <div class="form-row">
-                <label class="col-form-label">Area Details</label>
-            </div>
+    </div>
+</div>
 
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">Locality </h5>:
-                <p class="d-inline">Gondhale Nagar</p>
-            </span>
+<div class="form-row">
+    <div class="form-group col">
+        @Html.Label("State")
+        <div>
+            @Html.DropDownList("Dropdown_State", new SelectList(ViewBag.StateMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+        </div>
+    </div>
+</div>
 
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">City </h5>:
-                <p class="d-inline">Pune</p>
-            </span>
-
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">Tehsil </h5>:
-                <p class="d-inline">Pune</p>
-            </span>
-
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">District </h5>:
-                <p class="d-inline">Pune</p>
-            </span>
-
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">State </h5>:
-                <p class="d-inline">MAHARASHTRA</p>
-            </span>
-
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">Country </h5>:
-                <p class="d-inline">INDIA</p>
-            </span>
-
-            <span class="mb-sm-1 badge badge-light">
-                <h5 class="d-inline">Pincode </h5>:
-                <p class="d-inline">411028</p>
-            </span>
+<div class="form-row">
+    <div class="form-group col">
+        @Html.Label("City")
+        <div>
+            @Html.DropDownList("Dropdown_City", new SelectList(ViewBag.CityMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
         </div>
     </div>
 
+</div>
+<div class="form-row">
+    <div class="form-group col">
+        <label class="col-form-label">Pincode</label>
+        @Html.TextBox("TxtBox_Pincode", null, new { @class = "form-control", @type= "number" })
+    </div>
 </div>

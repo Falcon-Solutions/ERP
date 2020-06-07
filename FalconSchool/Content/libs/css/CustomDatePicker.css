@@ -2,12 +2,14 @@
     width: 280px !important;
     border: 1px solid #71748d !important;
     border-radius: 5px !important;
+    overflow: visible
 }
 
 .bootstrap-datetimepicker-widget table td.day {
     height: 10px !important;
     line-height: 10px !important;
     width: 10px !important;
+    
 }
 
 /*.dow {
@@ -16,4 +18,9 @@
 
 td.day {
     border: none;
+    overflow: visible
+}
+
+#datetimepicker4 div {
+    overflow:visible;
 }

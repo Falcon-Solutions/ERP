@@ -48,6 +48,13 @@ namespace Falcon.Service.Common
                     dropdownKeyValuePairs.Add(CacheKeyConstants.SectionMaster, FilterOutDropdownDataByKey(CacheKeyConstants.SectionMaster, result));
 
                     dropdownKeyValuePairs.Add(CacheKeyConstants.GenderMaster, FilterOutDropdownDataByKey(CacheKeyConstants.GenderMaster, result));
+
+                    dropdownKeyValuePairs.Add(CacheKeyConstants.CityMaster, FilterOutDropdownDataByKey(CacheKeyConstants.CityMaster, result));
+
+                    dropdownKeyValuePairs.Add(CacheKeyConstants.StateMaster, FilterOutDropdownDataByKey(CacheKeyConstants.StateMaster, result));
+
+                    dropdownKeyValuePairs.Add(CacheKeyConstants.CountryMaster, FilterOutDropdownDataByKey(CacheKeyConstants.CountryMaster, result));
+
                 }
 
             return dropdownKeyValuePairs;

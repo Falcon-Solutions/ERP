@@ -541,10 +541,10 @@
     <Content Include="Content\vendor\multi-select\css\multi-select.css" />
     <Content Include="Content\vendor\multi-select\js\jquery.multi-select.js" />
     <Content Include="Content\vendor\parsley\parsley.js" />
+    <Content Include="Content\vendor\select2\css\select2-bootstrap.css" />
     <Content Include="Content\vendor\select2\css\select2.css" />
-    <Content Include="Content\vendor\select2\css\select2.min.css" />
-    <Content Include="Content\vendor\select2\js\select2.full.min.js" />
-    <Content Include="Content\vendor\select2\js\select2.min.js" />
+    <Content Include="Content\vendor\select2\js\select2.full.js" />
+    <Content Include="Content\vendor\select2\js\select2.js" />
     <Content Include="Content\vendor\shortable-nestable\jquery.nestable.js" />
     <Content Include="Content\vendor\shortable-nestable\sort-nest.js" />
     <Content Include="Content\vendor\shortable-nestable\Sortable.min.js" />
@@ -623,6 +623,8 @@
     <Content Include="Views\Dashboard\Blank.cshtml" />
     <Content Include="Views\Shared\_Address.cshtml" />
     <Content Include="Views\Master\ClassConfig.cshtml" />
+    <Content Include="Views\LiveSearch.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

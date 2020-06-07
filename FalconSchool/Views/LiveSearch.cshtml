@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "LiveSearch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/vendor/select2/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/vendor/select2/css/select2.css" rel="stylesheet" />
+
+    <style>
+        .pin-select span {
+            width: 250px !important;
+        }
+    </style>
+}
+
+
+
+
+<h2>LiveSearch</h2>
+
+<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Card title</h3>
+            <div class="pin-select">
+                <select class=" js-example-basic-single " name="state"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Content/vendor/jquery/jquery-1.12.4.js"></script>
+    <script src="~/Content/vendor/jquery/jquery-ui-1.12.1.js"></script>
+    <script src="~/Content/vendor/select2/js/select2.js"></script>
+    <script src="~/Content/vendor/select2/js/select2.full.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".js-example-basic-single").select2({
+                theme: "bootstrap",
+                placeholder: "Search for a pincode",
+                minimumInputLength: 6,
+                ajax: {
+                    url: '@(Url.Action("SearchPostal", "Common"))',
+                    dataType: 'json',
+                    quietMillis: 250,
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                        return {
+                            q: term, //search term
+                            page: page // page number
+                        };
+                    },
+                    results: function (data, page) {
+                        var more = (page * 30) < data.total_count; // whether or not there are more results available
+
+                        // notice we return the value of more so Select2 knows if more results can be loaded
+                        return { results: data.items, more: more };
+                    }
+                },
+                formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+                formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+                //dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+            });
+
+            function repoFormatResult(repo) {
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                console.log(repo);
+
+                var $container = $(
+                    //"<div class='select2-result-repository clearfix'>" +
+                    //"<div class='select2-result-repository__avatar'><img src='" + repo.owner.avatar_url + "' /></div>" +
+                    //"<div class='select2-result-repository__meta'>" +
+                    //"<div class='select2-result-repository__title'></div>" +
+                    //"<div class='select2-result-repository__description'></div>" +
+                    //"<div class='select2-result-repository__statistics'>" +
+                    //"<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                    //"<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
+                    //"<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
+                    //"</div>" +
+                    //"</div>" +
+                    //"</div>"
+                    "<div>"+Test+"</div>"
+                );
+
+                //$container.find(".select2-result-repository__title").text(repo.full_name);
+                //$container.find(".select2-result-repository__description").text(repo.description);
+                //$container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
+                //$container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
+                //$container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
+
+                return $container;
+            }
+
+            function repoFormatSelection(repo) {
+                return repo.full_name || repo.text;
+            }
+        });
+    </script>
+}
