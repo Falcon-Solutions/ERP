@@ -10,9 +10,9 @@
     <link href="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.css" rel="stylesheet" />
     <link href="~/Content/vendor/fonts/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="~/Content/vendor/jquery/jquery-ui.css" rel="stylesheet" />
-    <link href="~/Content/vendor/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
-    <link href="~/Content/vendor/fonts/circular-std/style.css" rel="stylesheet"/>
-    <link href="~/Content/vendor/inputmask/css/inputmask.css" rel="stylesheet"/>
+    <link href="~/Content/vendor/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Content/vendor/fonts/circular-std/style.css" rel="stylesheet" />
+    <link href="~/Content/vendor/inputmask/css/inputmask.css" rel="stylesheet" />
     <style>
         .pin-select span {
             width: 100% !important;
@@ -371,43 +371,94 @@
 <!-- end wrapper  -->
 <!-- ============================================================== -->
 @section Scripts{
-    <script src="~/Content/vendor/bootstrap-select/js/bootstrap-select.js"></script>
+
 
     <script src="~/Content/vendor/datepicker/moment.js"></script>
     <script src="~/Content/vendor/datepicker/tempusdominus-bootstrap-4.js"></script>
     <script src="~/Content/vendor/datepicker/datepicker.js"></script>
+
     <script src="~/Content/vendor/jquery/jquery-1.12.4.js"></script>
     <script src="~/Content/vendor/jquery/jquery-ui-1.12.1.js"></script>
-    <script src="~/Content/vendor/jquery/jquery-3.5.1.slim.min.js"></script>
     <script src="~/Content/vendor/inputmask/js/jquery.inputmask.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.17/js/bootstrap-select.js"></script>
+    <script>
+        $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+    </script>
 
     <script>
-        'use strict';
-        $("#pin-mask").inputmask("999 999"),
-
-            $(document).ready(function () {
+        $("#pin-mask").inputmask("999 999");
+        $(document).ready(function () {
 
 
-                //Hide permenant address if current address is same.
-                $('#chkbx-copy-to-perm').click(function () {
-                    if ($(this).prop("checked") == true) {
-                        $('#card-permanent-address').hide();
-                        console.log("Checkbox is checked.");
-                    }
-                    else if ($(this).prop("checked") == false) {
-                        $('#card-permanent-address').show();
-                    }
-                });
-
-                $("#Dropdown_Country").on("change", function () {
-                    let countryId = parseInt($(this).val());
-                    alert("Handler for .select() called. " + countryId);
-
-                    if (countryId > 0) {
-
-                    }
-                });
+            //Hide permenant address if current address is same.
+            $('#chkbx-copy-to-perm').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#card-permanent-address').hide();
+                    console.log("Checkbox is checked.");
+                }
+                else if ($(this).prop("checked") == false) {
+                    $('#card-permanent-address').show();
+                }
             });
+
+            $("#Dropdown_Country").on("change", function () {
+                let countryId = parseInt($(this).val());
+
+                if (countryId > 0) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@(Url.Action("SearchStateByCountryId", "Common"))",
+                        data: {
+                            id: countryId
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+
+                            $("#Dropdown_State").empty();
+
+                            $.each(data, function () {
+                                $("#Dropdown_State").append($("<option></option>").val(this['Value']).html(this['Text']));
+                                $('#Dropdown_State').prop('disabled', false);
+                                $('#Dropdown_State').selectpicker('refresh');
+
+                            });
+
+                            //for (var i = 0; i < data.length; i++) {
+                            //    var opt = new Option(data[i].stu_name, data[i].stu_id);
+                            //    $('#op1').append(opt);
+
+                            //}
+                        },
+                    });
+                }
+            });
+
+
+            $("#Dropdown_State").on("change", function () {
+                let stateId = parseInt($(this).val());
+
+                if (stateId > 0) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@(Url.Action("SearchCityByStateId", "Common"))",
+                        data: {
+                            id: stateId
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            $("#Dropdown_City").empty();
+                            $.each(data, function () {
+                                $("#Dropdown_City").append($("<option></option>").val(this['Value']).html(this['Text']));
+                                $('#Dropdown_City').prop('disabled', false);
+                                $('#Dropdown_City').selectpicker('refresh');
+                            });
+                        },
+                    });
+                }
+            });
+        });
 
         /*  ==========================================
             SHOW UPLOADED IMAGE
@@ -442,227 +493,7 @@
             var fileName = input.files[0].name;
             infoArea.textContent = fileName;
         }
-
-
     </script>
+
 }
-
-@*<div class="form-horizontal">
-        <!-- All error messages and validation  messages will show here -->
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <!-- Row 1 begin : First name, middle name, last name, class selection and gender selection controls -->
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.FirstName)
-                <div>
-                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.MiddleName)
-                <div>
-                    @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.LastName)
-                <div>
-                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-1">
-                @Html.LabelFor(model => model.ClassId)
-                <div>
-                    @Html.DropDownList("ClassList", new SelectList(ViewBag.ClassMaster, "Text", "Value"), new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-1">
-                @Html.Label("Gender")
-                <div>
-                    @Html.DropDownList("Gender", new SelectList(ViewBag.GenderMaster, "Text", "Value"), new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <!-- Row 1 end -->
-        <!-- Row 2 begin : DoB date picker, phone number, adhar card number, email -->
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                @Html.Label("DoB")
-                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                    @Html.TextBoxFor(model => model.DoB, new { htmlAttributes = new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#datetimepicker4" } })
-                    <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.Phone)
-                <div>
-                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.AadharId)
-                <div>
-                    @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.LabelFor(model => model.Email)
-                <div>
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <!-- Row 2 end -->
-        <!-- Row 3 begin : Current address-->
-        <div class="form-row">
-            <div class="form-group col-4">
-                <div class="tab-regular">
-                    <ul class="nav nav-tabs " id="myTab" role="tablist">
-                        <li id="list-item-curnAddr" class="nav-item">
-                            <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Current</a>
-                        </li>
-                        <li id="list-item-permAddr" class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Permenent</a>
-                        </li>
-                    </ul>
-                    <div class="pb-2 pl-2 pr-1 pt-3 tab-content" id="myTabContent">
-                        <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <!--Here -->
-                            @{
-                                Html.RenderPartial("_Address");
-                            }
-                            <div class="">
-                                <div class="form-row col">
-                                    <label class="custom-control custom-checkbox">
-                                        <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Copy to Permenent</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            @{
-                                Html.RenderPartial("_Address");
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="form-group">
-                    @Html.Label("Religion")
-                    <div>
-                        @Html.DropDownList("Religion", new SelectList(ViewBag.ReligionMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Caste")
-                    <div>
-                        @Html.DropDownList("Caste", new SelectList(ViewBag.CasteMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Category")
-                    <div>
-                        @Html.DropDownList("Category", new SelectList(ViewBag.CategoryMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Blood Group")
-                    <div>
-                        @Html.DropDownList("BloodGroup", new SelectList(ViewBag.BloodGrpMaster, "Text", "Value"), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Row 3 end -->
-        <!-- Row 4 begin :  religion selection, caste selection, category selection and bloodgroup seelection control -->
-        <!-- Row 4 end -->
-        <!-- Row 5 begin :  parent name, parent phone, parent email controls -->
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                @Html.Label("Parent Name")
-                <div>
-                    @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group col-md-2">
-                @Html.Label("Parent Phone")
-                <div>
-                    @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group col-md-3">
-                @Html.Label("Parent Email")
-                <div>
-                    @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <!-- Row 5 end -->
-        <!-- Row 6 begin :  parent relationship, parent occupation controls -->
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                @Html.Label("Parent Relationship")
-                <div>
-                    @Html.EditorFor(model => model.ParentRelationship, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group col-md-2">
-                @Html.Label("Parent Occupation")
-                <div>
-                    @Html.EditorFor(model => model.ParentOccupation, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <!-- Row 6 end -->
-        <!-- Row 7 begin :  notes controls  -->
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                @Html.Label("Notes(if any)")
-                <div>
-                    @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
-                    @Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-        <!-- Row 7 end -->
-        <!-- Row 8 begin :  create and back button  -->
-        <div class="form-row">
-            <div class="form-group col-md-1">
-                <div>
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </div>
-            <div class="form-group col-md-1">
-                <div>
-                    @Html.ActionLink("Back to List", "List", null, new { @class = "btn btn-primary" })
-                </div>
-            </div>
-        </div>
-
-    </div>*@
 

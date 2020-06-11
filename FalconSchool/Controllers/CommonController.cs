@@ -36,5 +36,13 @@ namespace FalconSchool.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        // GET: get states by country
+        public JsonResult SearchCityByStateId(int id)
+        {
+            var result = commonService.GetCityByStateId(id, true);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -74,9 +74,9 @@ namespace Falcon.Service.Common
         {
             if (useCachedData)
             {
-                var states = CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster) as List<City>;
+                var cities = CachingService.GetCachedDataByKey(CacheKeyConstants.CityMaster) as List<City>;
 
-                return states.Where(x => x.refStateId == stateId)
+                return cities.Where(x => x.refStateId == stateId)
                     .Select(y => new DropdownData()
                     {
                         Text = y.Name,
