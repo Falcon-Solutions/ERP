@@ -49,48 +49,63 @@ namespace Falcon.Service.Common
 
                     dropdownKeyValuePairs.Add(CacheKeyConstants.GenderMaster, FilterOutDropdownDataByKey(CacheKeyConstants.GenderMaster, result));
 
-                    dropdownKeyValuePairs.Add(CacheKeyConstants.CityMaster, FilterOutDropdownDataByKey(CacheKeyConstants.CityMaster, result));
-
-                    dropdownKeyValuePairs.Add(CacheKeyConstants.StateMaster, FilterOutDropdownDataByKey(CacheKeyConstants.StateMaster, result));
-
                     dropdownKeyValuePairs.Add(CacheKeyConstants.CountryMaster, FilterOutDropdownDataByKey(CacheKeyConstants.CountryMaster, result));
+
+                    CachingService.InsertCachedDataByKey(CacheKeyConstants.StateMaster, result.Tables[CacheKeyConstants.StateMaster].AsEnumerable().Select(row => new State()
+                    {
+                        Id = row.Field<int>("myId"),
+                        Name = row.Field<string>("State"),
+                        refCountryId = row.Field<int>("refCountryId"),
+                    }).ToList());
+
+                    CachingService.InsertCachedDataByKey(CacheKeyConstants.CityMaster, result.Tables[CacheKeyConstants.CityMaster].AsEnumerable().Select(row => new City()
+                    {
+                        Id = row.Field<int>("myId"),
+                        Name = row.Field<string>("City"),
+                        refStateId = row.Field<int>("refStateId"),
+                    }).ToList());
 
                 }
 
             return dropdownKeyValuePairs;
         }
 
-
-
-        #region private Function
-        private List<DropdownData> FilterOutDropdownDataByKey(string key, DataSet ds)
+        public List<DropdownData> GetCityByStateId(int stateId, bool useCachedData)
         {
-            List<DropdownData> dropDowanData = new List<DropdownData>();
-            if (ds.Tables[key].Rows.Count > 0)
+            if (useCachedData)
             {
-                //foreach (DataRow row in ds.Tables[key].Rows)
-                //{
-                //    var item = new DropdownData();
+                var states = CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster) as List<City>;
 
-                //    item.Key = Convert.ToInt32(row.Field<decimal>("Key"));
-                //    item.Value = row.Field<string>("Value");
-
-                //    dropDowanData.Add(item);
-
-                //    dropDowanData.Add(new DropdownData { Key = 0, Value = string.Empty });
-
-                //    dropDowanData.OrderBy(x => x.Key);
-                //}
-
-                dropDowanData.AddRange(ds.Tables[key].AsEnumerable().Select(row => new DropdownData()
-                {
-                    Text = Convert.ToString(row.Field<decimal>("Key")),
-                    Value = row.Field<string>("Value")
-                }).ToList());
+                return states.Where(x => x.refStateId == stateId)
+                    .Select(y => new DropdownData()
+                    {
+                        Text = y.Name,
+                        Value = y.Id.ToString()
+                    }).ToList();
             }
+            else
+            {
+                return GetCityByStateId(stateId);
+            }
+        }
 
+        public List<DropdownData> GetStateByCountryId(int countryId, bool useCachedData)
+        {
+            if (useCachedData)
+            {
+                var states = CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster) as List<State>;
 
-            return dropDowanData;
+                return states.Where(x => x.refCountryId == countryId)
+                    .Select(y => new DropdownData()
+                    {
+                        Text = y.Name,
+                        Value = y.Id.ToString()
+                    }).ToList();
+            }
+            else
+            {
+                return GetStateByCountryId(countryId);
+            }
         }
 
         public List<PostalCodeMaster> GetPostalCodeBySearchKey(string searchKeyword)
@@ -101,7 +116,7 @@ namespace Falcon.Service.Common
 
             pinCodeList.AddRange(pinCodeDt.AsEnumerable().Select(row => new PostalCodeMaster()
             {
-                Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                Id = Convert.ToInt32(row.Field<int>("myId")),
                 Area = row.Field<string>("Area"),
                 City = row.Field<string>("City"),
                 Country = row.Field<string>("Country"),
@@ -112,6 +127,57 @@ namespace Falcon.Service.Common
             }));
 
             return pinCodeList;
+        }
+
+        #region private Function
+        private List<DropdownData> FilterOutDropdownDataByKey(string key, DataSet ds)
+        {
+            List<DropdownData> dropDowanData = new List<DropdownData>();
+            if (ds.Tables[key].Rows.Count > 0)
+            {
+                dropDowanData.AddRange(ds.Tables[key].AsEnumerable().Select(row => new DropdownData()
+                {
+                    Text = Convert.ToString(row.Field<int>("Key")),
+                    Value = row.Field<string>("Value")
+                }).ToList());
+            }
+
+
+            return dropDowanData;
+        }
+
+        private List<DropdownData> GetCityByStateId(int stateId)
+        {
+            var dtResult = repository.GetCityByStateId(stateId);
+            List<DropdownData> dropDowanData = new List<DropdownData>();
+
+            if (dtResult.Rows.Count > 0)
+            {
+                dropDowanData.AddRange(dtResult.AsEnumerable().Select(row => new DropdownData()
+                {
+                    Text = row.Field<string>("City"),
+                    Value = Convert.ToString(row.Field<int>("myId"))
+                }).ToList());
+            }
+
+            return dropDowanData;
+        }
+
+        private List<DropdownData> GetStateByCountryId(int countryId)
+        {
+            var dtResult = repository.GetStateByCountryId(countryId);
+            List<DropdownData> dropDowanData = new List<DropdownData>();
+
+            if (dtResult.Rows.Count > 0)
+            {
+                dropDowanData.AddRange(dtResult.AsEnumerable().Select(row => new DropdownData()
+                {
+                    Text = row.Field<string>("State"),
+                    Value = Convert.ToString(row.Field<int>("myId"))
+                }).ToList());
+            }
+
+            return dropDowanData;
         }
         #endregion
     }

@@ -23,13 +23,16 @@ namespace Falcon.DataAceess.ProspectRepository
         {
             string tableNames = "AllProspectStudents";
 
-            string commandText = @"SELECT myId 
-                                         ,ApplicationNo
-                                         ,FirstName
-                                         ,MiddleName
-                                         ,LastName
-                                         ,ApplicationDate
-                                    FROM ProspectStudent";
+            string commandText = @"SELECT PS.myId 
+                                         ,PS.ApplicationNo
+                                         ,PS.FirstName
+                                         ,PS.MiddleName
+                                         ,PS.LastName
+                                         ,PS.ApplicationDate
+                                         ,ASM.AdmissionStatus
+                                    FROM ProspectStudent PS
+                                    JOIN AdmStatusMaster ASM
+                                        ON PS.AdmissionStatus = ASM.myId";
 
             var result = dataAccess.GetDataTable(commandText, CommandType.Text, tableNames);
 
@@ -44,15 +47,14 @@ namespace Falcon.DataAceess.ProspectRepository
                         Id = Int32.Parse(row["myId"].ToString()),
                         Name = string.Concat(row["FirstName"].ToString(), " ",row["MiddleName"].ToString(), " ", row["LastName"].ToString()),
                         ApplicationNumber = row["ApplicationNo"].ToString(),
-                        ApplicationDate = DateTime.Parse(row["ApplicationDate"].ToString())
+                        ApplicationDate = DateTime.Parse(row["ApplicationDate"].ToString()),
+                        AdmissionStatus = row["AdmissionStatus"].ToString(),
                     });
                 }
             }
 
             return prospectStudents;
         }
-
-       
 
         public ViewProspectStudentModel ViewProspectStudent(int applicationId)
         {
@@ -153,7 +155,7 @@ namespace Falcon.DataAceess.ProspectRepository
                 ParameterName = "@ProspectId",
                 ParameterValue = ProspectStudentId,
                 ParameterDirection = ParameterDirection.Input,
-                ParameterType = SqlDbType.Decimal
+                ParameterType = SqlDbType.Int
             });
 
             var result = dataAccess.ExecuteNonQuery(StoredProcedureConstants.DeleteProsepctStudent, CommandType.StoredProcedure, dalParam);

@@ -14,12 +14,16 @@ namespace Falcon.DataAceess
 {
     public class CommonRepository : ICommonRepository
     {
+        private IAppConfig appConfig;
+        private IDataAccess dataAccess;
+        public CommonRepository()
+        {
+            this.appConfig = new AppConfig();
+            dataAccess = new MsSqlDataAccess(appConfig.FalconConnectionString);
+        }
+
         public DataSet GetMasterData()
         {
-            AppConfig config = new AppConfig();
-
-            MsSqlDataAccess dataAccess = new MsSqlDataAccess(config.FalconConnectionString);
-
             string[] tableNames = {
                 CacheKeyConstants.BloodGrpMaster, CacheKeyConstants.AdmStatusMaster,
                 CacheKeyConstants.ReligionMaster, CacheKeyConstants.CasteMaster,
@@ -34,10 +38,6 @@ namespace Falcon.DataAceess
 
         public DataTable GetPostalCodeBySearchKey(string searchKeyword)
         {
-            AppConfig config = new AppConfig();
-
-            MsSqlDataAccess dataAccess = new MsSqlDataAccess(config.FalconConnectionString);
-
             string tableNames = "PostalCodeMaster";
 
             string commandText = @"SELECT myId, PinCode , Area , City , Tehsil , District , State , Country FROM PinCodeMaster WHERE PinCode = " + searchKeyword;
@@ -45,5 +45,22 @@ namespace Falcon.DataAceess
             return dataAccess.GetDataTable(commandText, CommandType.Text, tableNames);
 
         }
+
+        public DataTable GetStateByCountryId(int countryId)
+        {
+            string commandText = @"SELECT myId, State From StateMaster WHERE refCountryId = " + countryId;
+
+            return dataAccess.GetDataTable(commandText, CommandType.Text);
+
+        }
+
+        public DataTable GetCityByStateId(int stateId)
+        {
+            string commandText = @"SELECT myId, City From CityMaster WHERE refStateId = " + stateId;
+
+            return dataAccess.GetDataTable(commandText, CommandType.Text);
+        }
+
+
     }
 }

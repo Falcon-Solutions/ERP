@@ -13,5 +13,9 @@ namespace Falcon.Service.Common
         Dictionary<string, List<DropdownData>> GetMasterData();
 
         List<PostalCodeMaster> GetPostalCodeBySearchKey(string searchKeyword);
+
+        List<DropdownData> GetCityByStateId(int stateId, bool useCachedData);
+
+        List<DropdownData> GetStateByCountryId(int countryId, bool useCachedData);
     }
 }

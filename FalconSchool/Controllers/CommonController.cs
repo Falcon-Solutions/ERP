@@ -28,5 +28,13 @@ namespace FalconSchool.Controllers
         {
             return View("~/Views/LiveSearch.cshtml");
         }
+
+        // GET: get states by country
+        public JsonResult SearchStateByCountryId(int id)
+        {
+            var result = commonService.GetStateByCountryId(id, true);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

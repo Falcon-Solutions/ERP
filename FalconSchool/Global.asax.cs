@@ -25,7 +25,10 @@ namespace FalconSchool
 
         private void LoadMasterDataCache()
         {
-            MastDataCache.LoadStaticCache();
+            CommonService MasterDataCache = new CommonService();
+            var masterData = MasterDataCache.GetMasterData();
+
+            CachingService.LoadStaticCacheForDropdown(masterData);
         }
     }
 }

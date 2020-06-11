@@ -1,19 +1,18 @@
-﻿using System;
+﻿using Falcon.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
-using Falcon.Service.Common;
-using Falcon.Entity;
-using Constants;
 
-namespace FalconSchool.Caching
+namespace Falcon.Service.Common
 {
-    [System.ComponentModel.DataObject]
-    public class MasterDataCache
+    public class CachingService
     {
-        public static void LoadStaticCache(Dictionary<string,List<DropdownData>> masterData)
+        public static void LoadStaticCacheForDropdown(Dictionary<string, List<DropdownData>> masterData)
         {
             foreach (var keyValue in masterData)
             {
@@ -29,18 +28,32 @@ namespace FalconSchool.Caching
 
         }
 
-        [DataObjectMethodAttribute(DataObjectMethodType.Select, true)]
-        public static List<DropdownData> GetCachedDataByKey(string key)
+        public static bool UpdateAllCacheObjects(Dictionary<string, List<DropdownData>> masterData)
         {
-            return HttpRuntime.Cache[key] as List<DropdownData>;
+            var enumerator = HttpRuntime.Cache.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                DeleteCacheByKey(enumerator.Key.ToString());
+            }
+
+            LoadStaticCacheForDropdown(masterData);
+
+            return true;
+        }
+
+        [DataObjectMethodAttribute(DataObjectMethodType.Select, true)]
+        public static dynamic GetCachedDataByKey(string key)
+        {
+            return HttpRuntime.Cache[key];
         }
 
         [DataObjectMethodAttribute(DataObjectMethodType.Insert, true)]
-        public static bool InsertCachedDataByKey(string key, object _obj)
+        public static bool InsertCachedDataByKey(string key, object value)
         {
             HttpRuntime.Cache.Insert(
               /* key */                key,
-              /* value */              _obj,
+              /* value */              value,
               /* dependencies */       null,
               /* absoluteExpiration */ Cache.NoAbsoluteExpiration,
               /* slidingExpiration */  Cache.NoSlidingExpiration,
@@ -51,24 +64,30 @@ namespace FalconSchool.Caching
         }
 
         [DataObjectMethodAttribute(DataObjectMethodType.Delete, true)]
-        public static List<DropdownData> DeleteCacheByKey(string key)
+        public static bool DeleteCacheByKey(string key)
         {
-            return HttpRuntime.Cache[key] as List<DropdownData>;
+            HttpRuntime.Cache.Remove(key);
+            return true;
         }
 
         [DataObjectMethodAttribute(DataObjectMethodType.Update, true)]
-        public static bool UpdateAllCacheObjects(Dictionary<string, List<DropdownData>> masterData)
+        public static bool UpdateCacheObjectsByKey(string key, object value)
         {
-            var enumerator = HttpRuntime.Cache.GetEnumerator();
-
-            while (enumerator.MoveNext())
+            if (DeleteCacheByKey(key))
             {
-                HttpRuntime.Cache.Remove(enumerator.Key.ToString());
+                if (InsertCachedDataByKey(key, value))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
-            LoadStaticCache(masterData);
-
-            return true;
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Constants;
 using Falcon.Entity.Prospect;
+using Falcon.Service.Common;
 using Falcon.Service.Prospect;
 using FalconSchool.Caching;
 using Utility;
@@ -40,19 +41,16 @@ namespace FalconSchool.Controllers
         // GET: ProspectStudent/Create
         public ActionResult Create()
         {
-            ViewBag.BloodGrpMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster);
-            ViewBag.AdmStatusMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster);
-            ViewBag.ReligionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.ReligionMaster);
-            ViewBag.CasteMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CasteMaster);
-            ViewBag.CategoryMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CategoryMaster);
-            ViewBag.SessionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.SessionMaster);
-            ViewBag.ClassMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.ClassMaster);
-            ViewBag.SectionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.SectionMaster);
-            ViewBag.GenderMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.GenderMaster);
-            ViewBag.CityMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CityMaster);
-            ViewBag.StateMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.StateMaster);
-            ViewBag.CountryMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CountryMaster);
-
+            ViewBag.BloodGrpMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster);
+            ViewBag.AdmStatusMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster);
+            ViewBag.ReligionMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.ReligionMaster);
+            ViewBag.CasteMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.CasteMaster);
+            ViewBag.CategoryMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.CategoryMaster);
+            ViewBag.SessionMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.SessionMaster);
+            ViewBag.ClassMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.ClassMaster);
+            ViewBag.SectionMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.SectionMaster);
+            ViewBag.GenderMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.GenderMaster);
+            ViewBag.CountryMaster = CachingService.GetCachedDataByKey(CacheKeyConstants.CountryMaster);
 
             ViewBag.FormAction = "Add";
 
@@ -107,15 +105,15 @@ namespace FalconSchool.Controllers
         // GET: ProspectStudent/Edit/5
         public ActionResult Edit(int id)
         {
-            ViewBag.BloodGrpMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster);
-            ViewBag.AdmStatusMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster);
-            ViewBag.ReligionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.ReligionMaster);
-            ViewBag.CasteMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CasteMaster);
-            ViewBag.CategoryMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.CategoryMaster);
-            ViewBag.SessionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.SessionMaster);
-            ViewBag.ClassMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.ClassMaster);
-            ViewBag.SectionMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.SectionMaster);
-            ViewBag.GenderMaster = MastDataCache.GetCachedDataByKey(CacheKeyConstants.GenderMaster);
+            ViewBag.BloodGrpMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster);
+            ViewBag.AdmStatusMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster);
+            ViewBag.ReligionMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.ReligionMaster);
+            ViewBag.CasteMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.CasteMaster);
+            ViewBag.CategoryMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.CategoryMaster);
+            ViewBag.SessionMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.SessionMaster);
+            ViewBag.ClassMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.ClassMaster);
+            ViewBag.SectionMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.SectionMaster);
+            ViewBag.GenderMaster = MasterDataCache.GetCachedDataByKey(CacheKeyConstants.GenderMaster);
 
             ViewBag.FormAction = "Edit";
 

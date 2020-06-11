@@ -8,11 +8,11 @@ namespace Falcon.DataAceess
 {
     public static class StoredProcedureConstants
     {
-        public static string GetProspectStudentById = "GetProspectStudentsById";
+        public static string GetProspectStudentById = "SP_GetProspectStudentsById";
 
-        public static string GetMasterData = "GetMasterData";
+        public static string GetMasterData = "SP_GetMasterData";
 
-        public static string AddNewProspect = "AddNewProspect";
+        public static string AddNewProspect = "SP_AddNewProspect";
 
         public static string DeleteProsepctStudent = "SP_DeleteProsepctStudent";
 

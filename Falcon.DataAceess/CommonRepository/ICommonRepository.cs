@@ -11,5 +11,7 @@ namespace Falcon.DataAceess
     {
         DataSet GetMasterData();
         DataTable GetPostalCodeBySearchKey(string searchKeyword);
+        DataTable GetStateByCountryId(int countryId);
+        DataTable GetCityByStateId(int cityId);
     }
 }

@@ -38,4 +38,24 @@ namespace Falcon.Entity.Address
         public string Country { get; set; }
         public string Pin { get; set; }
     }
+
+    public class City
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int refStateId { get; set; }
+    }
+
+    public class State
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int refCountryId { get; set; }
+    }
+
+    public class Country
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }
