@@ -11,7 +11,6 @@
     <link href="~/Content/vendor/fonts/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="~/Content/vendor/jquery/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/vendor/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <link href="~/Content/vendor/fonts/circular-std/style.css" rel="stylesheet" />
     <link href="~/Content/vendor/inputmask/css/inputmask.css" rel="stylesheet" />
     <style>
         .pin-select span {
@@ -130,7 +129,7 @@
                         <div class="form-group col-4">
                             @Html.LabelFor(model => model.FirstName)
                             <div>
-                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextBox("First-Name","ABC", new { @class = "form-control" , @disabled = "disabled"})
                                 @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -209,7 +208,8 @@
                             @Html.Label("Upload Photo")
                             <div>
                                 <div class="input-group mb-3 px-2 py-2 shadow-sm bg-light">
-                                    <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0" capture="camera">
+                                    @Html.TextBox("upload", null, new { @class = "form-control border-0", type = "file" , @onchange = "readURL(this);", @capture = "camera" })
+                                    @*<input id="upload" type="file" onchange="readURL(this);" class="form-control border-0" capture="camera">*@
                                     <label id="upload-label" for="upload" class="font-weight-light text-muted">Please select file...</label>
                                     <div class="input-group-append">
                                         <label for="upload" class="btn btn-light m-0 px-4"> <i class="fas fa-cloud-alt mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Browse Photo</small></label>
@@ -228,9 +228,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <input id="myFileInput" type="file" accept="image/*;capture=camera">
-                    </div>
                 </div>
                 <div class="tab-pane fade fix-min-height" id="address-details" role="tabpanel" aria-labelledby="address-details-tab">
                     <div class="form-row">
@@ -243,7 +240,7 @@
                             </div>
                             <div class="card-body">
                                 @{
-                                    Html.RenderPartial("_Address");
+                                    Html.RenderPartial("_Address", "Current" as string);
                                 }
                                 <div class="">
                                     <div class="form-row">
@@ -266,7 +263,7 @@
                             </div>
                             <div class="card-body">
                                 @{
-                                    Html.RenderPartial("_Address");
+                                    Html.RenderPartial("_Address", "Permenent" as string);
                                 }
                             </div>
                         </div>
@@ -275,7 +272,7 @@
                 </div>
                 <div class="tab-pane fade fix-min-height" id="parents-details" role="tabpanel" aria-labelledby="parents-details-tab">
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-3">
                             @Html.Label("Parent Name")
                             <div>
                                 @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
@@ -283,7 +280,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-2">
                             @Html.Label("Parent Phone")
                             <div>
                                 @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
@@ -291,7 +288,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-3">
                             @Html.Label("Parent Email")
                             <div>
                                 @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
@@ -300,17 +297,17 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-3">
                             @Html.Label("Parent Relationship")
                             <div>
-                                @Html.EditorFor(model => model.ParentRelationship, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownList("Relationship", new SelectList(ViewBag.RelationshipMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
                                 @Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-3">
                             @Html.Label("Parent Occupation")
                             <div>
-                                @Html.EditorFor(model => model.ParentOccupation, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.DropDownList("Relationship", new SelectList(ViewBag.OccupationMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
                                 @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -350,6 +347,19 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Row 8 begin :  create and back button  -->
+                    <div class="form-row">
+                        <div class="form-group col-auto mr-2">
+                            <div>
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                @Html.ActionLink("Back to List", "List", null, new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -386,7 +396,8 @@
     </script>
 
     <script>
-        $("#pin-mask").inputmask("999 999");
+        
+
         $(document).ready(function () {
 
 
@@ -398,64 +409,6 @@
                 }
                 else if ($(this).prop("checked") == false) {
                     $('#card-permanent-address').show();
-                }
-            });
-
-            $("#Dropdown_Country").on("change", function () {
-                let countryId = parseInt($(this).val());
-
-                if (countryId > 0) {
-                    $.ajax({
-                        type: "GET",
-                        url: "@(Url.Action("SearchStateByCountryId", "Common"))",
-                        data: {
-                            id: countryId
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            console.log(data);
-
-                            $("#Dropdown_State").empty();
-
-                            $.each(data, function () {
-                                $("#Dropdown_State").append($("<option></option>").val(this['Value']).html(this['Text']));
-                                $('#Dropdown_State').prop('disabled', false);
-                                $('#Dropdown_State').selectpicker('refresh');
-
-                            });
-
-                            //for (var i = 0; i < data.length; i++) {
-                            //    var opt = new Option(data[i].stu_name, data[i].stu_id);
-                            //    $('#op1').append(opt);
-
-                            //}
-                        },
-                    });
-                }
-            });
-
-
-            $("#Dropdown_State").on("change", function () {
-                let stateId = parseInt($(this).val());
-
-                if (stateId > 0) {
-                    $.ajax({
-                        type: "GET",
-                        url: "@(Url.Action("SearchCityByStateId", "Common"))",
-                        data: {
-                            id: stateId
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            console.log(data);
-                            $("#Dropdown_City").empty();
-                            $.each(data, function () {
-                                $("#Dropdown_City").append($("<option></option>").val(this['Value']).html(this['Text']));
-                                $('#Dropdown_City').prop('disabled', false);
-                                $('#Dropdown_City').selectpicker('refresh');
-                            });
-                        },
-                    });
                 }
             });
         });
@@ -492,6 +445,62 @@
             var input = event.srcElement;
             var fileName = input.files[0].name;
             infoArea.textContent = fileName;
+        }
+
+        $("input[name*='TxtBox_Pincode']").inputmask("999 999");
+
+        function fillStates(element, stateDropDownId) {
+            let countryId = parseInt($(element).val());
+
+            if (countryId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "@(Url.Action("SearchStateByCountryId", "Common"))",
+                    data: {
+                        id: countryId
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+
+                        $(stateDropDownId).empty();
+
+                        $.each(data, function () {
+                            $(stateDropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                            $(stateDropDownId).prop('disabled', false);
+                            $(stateDropDownId).selectpicker('refresh');
+
+                        });
+                    },
+                });
+            }
+        }
+
+        function fillCities(element, cityDropDownId) {
+            let stateId = parseInt($(element).val());
+
+            if (stateId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "@(Url.Action("SearchCityByStateId", "Common"))",
+                    data: {
+                        id: stateId
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+
+                        $(cityDropDownId).empty();
+
+                        $.each(data, function () {
+                            $(cityDropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                            $(cityDropDownId).prop('disabled', false);
+                            $(cityDropDownId).selectpicker('refresh');
+
+                        });
+                    },
+                });
+            }
         }
     </script>
 

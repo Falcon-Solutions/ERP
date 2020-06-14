@@ -1,4 +1,4 @@
-﻿
+﻿@model string
 
 <div class="form-row">
     <div class="form-group col">
@@ -6,39 +6,69 @@
         <textarea id="txt-Area-Details" class="form-control" rows="3"></textarea>
     </div>
 </div>
-
 <div class="form-row">
     <div class="form-group col">
         @Html.Label("Country")
         <div>
-            @Html.DropDownList("Dropdown_Country", new SelectList(ViewBag.CountryMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @title = "Please select country" })
+            @Html.DropDownList(@Model + "_Dropdown_Country"
+            , new SelectList(ViewBag.CountryMaster, "Text", "Value")
+            , new {
+                @class = "form-control selectpicker"
+                    , @data_size = "5"
+                    , @data_flip = "false"
+                    , @data_display = "static"
+                    , @title = "--Please Select--"
+                    , @data_live_search = "true"
+                    , @onchange = "fillStates("+"'#"+ @Model + "_Dropdown_Country"+"'" + ",'#" + @Model + "_Dropdown_State"+ "'" + ");"
+            }
+           )
         </div>
     </div>
 </div>
-
 <div class="form-row">
     <div class="form-group col">
         @Html.Label("State")
         <div>
-            @Html.DropDownList("Dropdown_State", new List<SelectListItem> { }, new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @title = "--Please Select--", @disabled = "disabled" })
+            @Html.DropDownList(@Model + "Dropdown_State"
+           , new List<SelectListItem> { }
+           , new {
+               @class = "form-control selectpicker"
+               , @data_size = "5"
+               , @data_flip = "false"
+               , @data_display = "static"
+               , @title = "--Please Select--"
+               , @disabled = "disabled"
+               , @data_live_search = "true"
+               , @Id = @Model + "_Dropdown_State"
+               , @onchange = "fillCities(" + "'#" + @Model + "_Dropdown_State" + "'" + ",'#" + @Model + "_Dropdown_City" + "'" + ");"
+           })
         </div>
     </div>
 </div>
-
 <div class="form-row">
     <div class="form-group col">
         @Html.Label("City")
         <div>
-            @Html.DropDownList("Dropdown_City", new List<SelectListItem> { },new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @title = "--Please Select--", @disabled = "disabled" })
+            @Html.DropDownList(@Model + "Dropdown_City"
+           , new List<SelectListItem> { }
+           , new {
+               @class = "form-control selectpicker"
+               , @data_size = "5"
+               , @data_flip = "false"
+               , @data_display = "static"
+               , @title = "--Please Select--"
+               , @disabled = "disabled"
+               , @data_live_search = "true"
+               , @Id = @Model + "_Dropdown_City"
+           })
         </div>
     </div>
-
 </div>
 <div class="form-row">
     <div class="form-group col">
         @Html.Label("Pincode")
         <div>
-            @Html.TextBox("TxtBox_Pincode", null, new { @class = "form-control ls-2", @placeholder = "", @id = "pin-mask" })
+            @Html.TextBox("TxtBox_Pincode", null, new { @class = "form-control ls-2", @placeholder = "", @id = @Model + "pin-mask" })
         </div>
     </div>
 </div>

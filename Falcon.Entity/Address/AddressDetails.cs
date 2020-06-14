@@ -58,4 +58,9 @@ namespace Falcon.Entity.Address
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class AddressType
+    {
+        public string Name { get; set; }
+    }
 }

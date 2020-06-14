@@ -13,12 +13,7 @@ namespace FalconSchool
                 "~/Content/vendor/bootstrap/css/bootstrap.min.css",
                 "~/Content/vendor/fonts/circular-std/style.css",
                 "~/Content/vendor/fonts/fontawesome/css/fontawesome-all.css",
-                "~/Content/vendor/charts/chartist-bundle/chartist.css",
-                "~/Content/vendor/charts/morris-bundle/morris.css",
-                "~/Content/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css",
-                "~/Content/vendor/charts/c3charts/c3.css",
-                "~/Content/vendor/fonts/flag-icon-css/flag-icon.min.css"
-                        ));
+                "~/Content/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css"));
 
 
 

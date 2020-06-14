@@ -21,6 +21,8 @@ namespace Constants
         public static string CityMaster = "CityMaster";
         public static string StateMaster = "StateMaster";
         public static string CountryMaster = "CountryMaster";
+        public static string RelationshipMaster = "RelationshipMaster";
+        public static string OccupationMaster = "OccupationMaster";
 
         public static string MasterData = "MasterData"; 
     }

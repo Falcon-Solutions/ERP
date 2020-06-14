@@ -30,7 +30,8 @@ namespace Falcon.DataAceess
                 CacheKeyConstants.CategoryMaster, CacheKeyConstants.SessionMaster,
                 CacheKeyConstants.ClassMaster, CacheKeyConstants.SectionMaster,
                 CacheKeyConstants.GenderMaster, CacheKeyConstants.CityMaster,
-                CacheKeyConstants.StateMaster, CacheKeyConstants.CountryMaster
+                CacheKeyConstants.StateMaster, CacheKeyConstants.CountryMaster,
+                CacheKeyConstants.RelationshipMaster, CacheKeyConstants.OccupationMaster
             };
 
             return dataAccess.GetDataSet(StoredProcedureConstants.GetMasterData, CommandType.StoredProcedure, tableNames);

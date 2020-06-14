@@ -51,6 +51,10 @@ namespace Falcon.Service.Common
 
                     dropdownKeyValuePairs.Add(CacheKeyConstants.CountryMaster, FilterOutDropdownDataByKey(CacheKeyConstants.CountryMaster, result));
 
+                    dropdownKeyValuePairs.Add(CacheKeyConstants.RelationshipMaster, FilterOutDropdownDataByKey(CacheKeyConstants.RelationshipMaster, result));
+
+                    dropdownKeyValuePairs.Add(CacheKeyConstants.OccupationMaster, FilterOutDropdownDataByKey(CacheKeyConstants.OccupationMaster, result));
+
                     CachingService.InsertCachedDataByKey(CacheKeyConstants.StateMaster, result.Tables[CacheKeyConstants.StateMaster].AsEnumerable().Select(row => new State()
                     {
                         Id = row.Field<int>("myId"),
