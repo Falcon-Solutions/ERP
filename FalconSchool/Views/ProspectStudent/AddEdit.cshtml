@@ -245,7 +245,9 @@
                                 <div class="">
                                     <div class="form-row">
                                         <label class="custom-control custom-checkbox">
-                                            <input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Permanent address is same as current address</span>
+                                            @Html.CheckBox("chkbx-copy-to-perm", new { @class = "form-control custom-control-input" })
+                                            <span class="custom-control-label">Permanent address is same as current address</span>
+                                            @*<input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Permanent address is same as current address</span>*@
                                         </label>
                                     </div>
                                 </div>
@@ -307,7 +309,7 @@
                         <div class="form-group col-3">
                             @Html.Label("Parent Occupation")
                             <div>
-                                @Html.DropDownList("Relationship", new SelectList(ViewBag.OccupationMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.DropDownList("Occupation", new SelectList(ViewBag.OccupationMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
                                 @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -447,7 +449,7 @@
             infoArea.textContent = fileName;
         }
 
-        $("input[name*='TxtBox_Pincode']").inputmask("999 999");
+        $(".pincode-mask").inputmask("999 999");
 
         function fillStates(element, stateDropDownId) {
             let countryId = parseInt($(element).val());

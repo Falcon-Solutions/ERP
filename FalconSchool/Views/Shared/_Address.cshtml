@@ -68,7 +68,7 @@
     <div class="form-group col">
         @Html.Label("Pincode")
         <div>
-            @Html.TextBox("TxtBox_Pincode", null, new { @class = "form-control ls-2", @placeholder = "", @id = @Model + "pin-mask" })
+            @Html.TextBox(@Model + "_TxtBox_Pincode", null, new { @class = "form-control ls-2 pincode-mask", @placeholder = "" })
         </div>
     </div>
 </div>

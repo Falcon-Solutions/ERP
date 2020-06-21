@@ -67,12 +67,12 @@
 
                         <li class="nav-item">
                             <a class="@(sessionULIndex == 0 ? "nav-link h5 active" : "nav-link h5")"
-                               id=@(ses.myId + "LI")
+                               id=@(ses.Name.ToLower() + "-vertical-tab")
                                data-toggle="tab"
-                               href="@("#" + ses.myId + "div")"
+                               href="@("#" + ses.Name.ToLower() + "-vertical")"
                                role="tab"
                                aria-controls="home"
-                               aria-selected="true">@Html.Raw(ses.Name)</a>
+                               aria-selected=@(sessionULIndex == 0 ? "true" : "false")>@Html.Raw(ses.Name)</a>
                         </li>
 
                         sessionULIndex++;
@@ -85,9 +85,9 @@
                     @foreach (var ses in Model.sessionList)
                     {
                         <div class="@(sessionDivIndex == 0 ? "tab-pane fade show active" : "tab-pane fade")"
-                             id="@(ses.myId + "div")"
+                             id="@(ses.Name.ToLower() + "-vertical")"
                              role="tabpanel"
-                             aria-labelledby=@(ses.myId + "LI")>
+                             aria-labelledby=@(ses.Name.ToLower() + "-vertical-tab")>
                             <div class="row">
                                 @foreach (var cls in Model.classList)
                                 {
