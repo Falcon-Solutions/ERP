@@ -23,6 +23,57 @@ namespace Falcon.Service.MasterRepository
             this.appConfig = appConfig;
         }
 
+        public MiscConfiguration GetMiscConfigurationData()
+        {
+            var result = repository.GetMiscConfigurationData();
+
+            var model = new MiscConfiguration();
+
+            model.relationshipList = new List<RelationshipModel>();
+            model.occupationList  = new List<OccupationModel>();
+            model.religionList  = new List<ReligionModel>();
+            model.categoryList = new List<CategoryModel>();
+            model.casteList = new List<CasteModel>();
+
+            model.relationshipList.AddRange(result.Tables["RelationshipMaster"].AsEnumerable()
+                                    .Select(row => new RelationshipModel()
+                                    {
+                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Name = row.Field<string>("RelationShip")
+                                    }));
+
+            model.occupationList.AddRange(result.Tables["occupationMaster"].AsEnumerable()
+                                    .Select(row => new OccupationModel()
+                                    {
+                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Name = row.Field<string>("Occupation")
+                                    }));
+
+            model.religionList.AddRange(result.Tables["ReligionMaster"].AsEnumerable()
+                                    .Select(row => new ReligionModel()
+                                    {
+                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Name = row.Field<string>("Religion")
+                                    }));
+
+            model.categoryList.AddRange(result.Tables["CategoryMaster"].AsEnumerable()
+                                    .Select(row => new CategoryModel()
+                                    {
+                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Name = row.Field<string>("Category")
+
+                                    }));
+
+            model.casteList.AddRange(result.Tables["CasteMaster"].AsEnumerable()
+                                    .Select(row => new CasteModel()
+                                    {
+                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Name = row.Field<string>("Caste")
+
+                                    }));
+            return model;
+        }
+
         public ClassConfiguration GetClassConfiguration()
         {
             var result = repository.GetClassesMasterConfiguration();
@@ -95,6 +146,81 @@ namespace Falcon.Service.MasterRepository
             }
 
             return repository.UpdateClassesMasterConfiguration(classXrefDataTable);
+        }
+
+        public bool AddOcccupation(int id, string occupation)
+        {
+            return repository.AddOcccupation(id, occupation);
+        }
+
+        public bool UpdateOccupation(int id, string occupation)
+        {
+            return repository.UpdateOccupation(id, occupation);
+        }
+
+        public bool DeleteOccupation(int id)
+        {
+            return repository.DeleteOccupation(id);
+        }
+
+        public bool AddRelationship(int id, string relationship)
+        {
+            return repository.AddRelationship(id, relationship);
+        }
+
+        public bool UpdateRelationship(int id, string relationship)
+        {
+            return repository.UpdateRelationship(id, relationship);
+        }
+
+        public bool DeleteRelationship(int id)
+        {
+            return repository.DeleteRelationship(id);
+        }
+
+        public bool AddReligion(int id, string religion)
+        {
+            return repository.AddReligion(id, religion);
+        }
+
+        public bool UpdateReligion(int id, string religion)
+        {
+            return repository.UpdateReligion(id, religion);
+        }
+
+        public bool DeleteReligion(int id)
+        {
+            return repository.DeleteReligion(id);
+        }
+
+        public bool AddCaste(int id, string caste)
+        {
+            return repository.AddCaste(id, caste);
+        }
+
+        public bool UpdateCaste(int id, string caste)
+        {
+            return repository.UpdateCaste(id, caste);
+        }
+
+        public bool DeleteCaste(int id)
+        {
+            return repository.DeleteCaste(id);
+        }
+
+        public bool AddCategory(int id, string category)
+        {
+            return repository.AddCategory(id, category);
+        }
+
+        public bool UpdateCategory(int id, string category)
+        {
+            return repository.UpdateCategory(id, category);
+        }
+
+        public bool DeleteCategory(int id)
+        {
+            return repository.DeleteCategory(id);
         }
     }
 }

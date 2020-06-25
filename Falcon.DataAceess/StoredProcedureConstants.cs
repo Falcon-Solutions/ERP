@@ -19,5 +19,9 @@ namespace Falcon.DataAceess
         public static string GetClassConfiguration = "SP_GetClassConfiguration";
 
         public static string UpdateClassConfiguration = "SP_UpdateClassXRef";
+
+        public static string GetMiscConfigData = "SP_GetMiscConfigData";
+
+
     }
 }

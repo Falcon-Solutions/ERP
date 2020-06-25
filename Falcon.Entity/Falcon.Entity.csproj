@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressDetails.cs" />
     <Compile Include="CommonEntity.cs" />
+    <Compile Include="Master\MiscConfiguration.cs" />
     <Compile Include="Master\ClassConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prospect\ProspectModel.cs" />
