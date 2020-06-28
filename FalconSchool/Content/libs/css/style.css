@@ -7339,3 +7339,13 @@ input.ls-3 {
 input.ls-4 {
     letter-spacing: 10px;
 }
+
+.wd-action-btn-1 {
+    width: 5% !important;
+}
+.wd-action-btn-2 {
+    width: 11% !important;
+}
+.wd-action-btn-3 {
+    width: 15% !important;
+}
