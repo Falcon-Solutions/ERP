@@ -628,6 +628,8 @@
     <Content Include="Views\Shared\_Address.cshtml" />
     <Content Include="Views\Master\ClassConfig.cshtml" />
     <Content Include="Views\Master\Misc.cshtml" />
+    <Content Include="Views\Shared\_MasterDataGrid.cshtml" />
+    <Content Include="Views\Shared\_UpdateMaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

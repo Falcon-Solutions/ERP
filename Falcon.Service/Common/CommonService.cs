@@ -77,7 +77,7 @@ namespace Falcon.Service.Common
 
                 dropDowanData.AddRange(ds.Tables[key].AsEnumerable().Select(row => new DropdownData()
                 {
-                    Text = Convert.ToString(row.Field<decimal>("Key")),
+                    Text = Convert.ToString(row.Field<int>("Key")),
                     Value = row.Field<string>("Value")
                 }).ToList());
             }
@@ -94,7 +94,7 @@ namespace Falcon.Service.Common
 
             pinCodeList.AddRange(pinCodeDt.AsEnumerable().Select(row => new PostalCodeMaster()
             {
-                Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                Id = Convert.ToInt32(row.Field<int>("myId")),
                 Area = row.Field<string>("Area"),
                 City = row.Field<string>("City"),
                 Country = row.Field<string>("Country"),

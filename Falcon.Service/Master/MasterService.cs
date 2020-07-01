@@ -29,45 +29,45 @@ namespace Falcon.Service.MasterRepository
 
             var model = new MiscConfiguration();
 
-            model.relationshipList = new List<RelationshipModel>();
-            model.occupationList  = new List<OccupationModel>();
-            model.religionList  = new List<ReligionModel>();
-            model.categoryList = new List<CategoryModel>();
-            model.casteList = new List<CasteModel>();
+            model.relationshipList = new List<MasterData>();
+            model.occupationList  = new List<MasterData>();
+            model.religionList  = new List<MasterData>();
+            model.categoryList = new List<MasterData>();
+            model.casteList = new List<MasterData>();
 
             model.relationshipList.AddRange(result.Tables["RelationshipMaster"].AsEnumerable()
-                                    .Select(row => new RelationshipModel()
+                                    .Select(row => new MasterData()
                                     {
-                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Id = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("RelationShip")
                                     }));
 
             model.occupationList.AddRange(result.Tables["occupationMaster"].AsEnumerable()
-                                    .Select(row => new OccupationModel()
+                                    .Select(row => new MasterData()
                                     {
-                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Id = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("Occupation")
                                     }));
 
             model.religionList.AddRange(result.Tables["ReligionMaster"].AsEnumerable()
-                                    .Select(row => new ReligionModel()
+                                    .Select(row => new MasterData()
                                     {
-                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Id = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("Religion")
                                     }));
 
             model.categoryList.AddRange(result.Tables["CategoryMaster"].AsEnumerable()
-                                    .Select(row => new CategoryModel()
+                                    .Select(row => new MasterData()
                                     {
-                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Id = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("Category")
 
                                     }));
 
             model.casteList.AddRange(result.Tables["CasteMaster"].AsEnumerable()
-                                    .Select(row => new CasteModel()
+                                    .Select(row => new MasterData()
                                     {
-                                        Id = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        Id = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("Caste")
 
                                     }));
@@ -88,31 +88,31 @@ namespace Falcon.Service.MasterRepository
             model.sessionList.AddRange(result.Tables["SessionMaster"].AsEnumerable()
                                     .Select(row => new SessionModel()
                                     {
-                                        myId = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        myId = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("SessionName")
                                     }));
 
             model.classList.AddRange(result.Tables["ClassMaster"].AsEnumerable()
                                     .Select(row => new ClassModel()
                                     {
-                                        myId = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        myId = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("ClassName")
                                     }));
 
             model.sectionList.AddRange(result.Tables["SectionMaster"].AsEnumerable()
                                     .Select(row => new SectionModel()
                                     {
-                                        myId = Convert.ToInt32(row.Field<decimal>("myId")),
+                                        myId = Convert.ToInt32(row.Field<int>("myId")),
                                         Name = row.Field<string>("SectionCode")
                                     }));
 
             model.ClassXrefList.AddRange(result.Tables["ClassXref"].AsEnumerable()
                                     .Select(row => new ClassXref()
                                     {
-                                        myId = Convert.ToInt32(row.Field<decimal>("myId")),
-                                        ClassId = Convert.ToInt32(row.Field<decimal>("refClassId")),
-                                        SectionId = Convert.ToInt32(row.Field<decimal>("refSecId")),
-                                        SessionId = Convert.ToInt32(row.Field<decimal>("refSessionId")),
+                                        myId = Convert.ToInt32(row.Field<int>("myId")),
+                                        ClassId = Convert.ToInt32(row.Field<int>("refClassId")),
+                                        SectionId = Convert.ToInt32(row.Field<int>("refSecId")),
+                                        SessionId = Convert.ToInt32(row.Field<int>("refSessionId")),
                                         Strength = 0/*Convert.ToInt32(row.Field<decimal>("Strength"))*/
                                     }));
 
@@ -122,10 +122,10 @@ namespace Falcon.Service.MasterRepository
         public bool UpdateClassConfig(string[] AllKeys)
         {
             DataTable classXrefDataTable = new DataTable("ClassXref");
-            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_CheckedId", DataType = typeof(decimal) });
-            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ClassID", DataType = typeof(decimal) });
-            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_SectionId", DataType = typeof(decimal) });
-            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_SessionID", DataType = typeof(decimal) });
+            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_CheckedId", DataType = typeof(int) });
+            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ClassID", DataType = typeof(int) });
+            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_SectionId", DataType = typeof(int) });
+            classXrefDataTable.Columns.Add(new DataColumn { ColumnName = "UT_SessionID", DataType = typeof(int) });
 
             DataRow row;
 

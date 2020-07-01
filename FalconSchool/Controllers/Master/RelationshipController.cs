@@ -1,4 +1,6 @@
-﻿using Falcon.Service.MasterRepository;
+﻿using Constants;
+using Falcon.Service.MasterRepository;
+using FalconSchool.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +11,27 @@ namespace FalconSchool.Controllers.Master
 {
     public class RelationshipController : Controller
     {
-        private readonly IMasterService masterservice;
+        private readonly IMasterService masterService;
 
         public RelationshipController(IMasterService service)
         {
-            this.masterservice = service;
+            this.masterService = service;
         }
 
+
+        public ActionResult Create(int id)
+        {
+            ViewBag.Action = "Create";
+            ViewBag.ControllerName = "Relationship";
+            return PartialView("_UpdateMaster");
+        }
+
+        public ActionResult Update(int id)
+        {
+            ViewBag.Action = "Update";
+            ViewBag.ControllerName = "Relationship";
+            return PartialView("_UpdateMaster");
+        }
 
         // POST: Misc/Create
         [HttpPost]
@@ -50,20 +66,44 @@ namespace FalconSchool.Controllers.Master
             }
         }
 
-
         // POST: Misc/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
+                var result = masterService.DeleteRelationship(id);
+                if (result)
+                {
+                    
+                    ViewBag.Action = "delete";
+                    ViewBag.Success = true;
+                    ViewBag.AlertShow = true;
+                    ViewBag.AlertMessage = "Successfully deleted relationship.";
+                    ViewBag.AlertClass = "alert alert-success alert-dismissible fade show";
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Misc");
+                }
+                else {
+                    ViewBag.Action = "delete";
+                    ViewBag.Success = false;
+                    ViewBag.AlertShow = true;
+                    ViewBag.AlertMessage = "Error while deleting relationship";
+                    ViewBag.AlertClass = "alert alert-danger alert-dismissible fade show";
+
+                    return RedirectToAction("Index", "Misc");
+                }
+                
             }
             catch
             {
-                return View();
+                ViewBag.Action = "delete";
+                ViewBag.Success = false;
+                ViewBag.AlertShow = true;
+                ViewBag.AlertMessage = "Error while deleting relationship";
+                ViewBag.AlertClass = "alert alert-danger alert-dismissible fade show";
+
+                return RedirectToAction("Index", "Misc");
             }
         }
 

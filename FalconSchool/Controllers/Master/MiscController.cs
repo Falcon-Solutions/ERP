@@ -1,4 +1,5 @@
-﻿using Falcon.Service.MasterRepository;
+﻿using Falcon.Entity.Master;
+using Falcon.Service.MasterRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,21 @@ namespace FalconSchool.Controllers.Master
         // GET: Misc
         public ActionResult Index()
         {
-            var model = masterservice.GetMiscConfigurationData();
-            
-            return View("~/views/master/misc.cshtml", model );
+            var masterData = masterservice.GetMiscConfigurationData();
+
+            var model = new MiscConfigurationViewModel();
+
+            var dataList = new List<MiscConfigurationModel>();
+
+            dataList.Add(new MiscConfigurationModel { ControllerName = "Relationship", ModelData = masterData.relationshipList });
+            dataList.Add(new MiscConfigurationModel { ControllerName = "Caste", ModelData = masterData.casteList });
+            dataList.Add(new MiscConfigurationModel { ControllerName = "Religion", ModelData = masterData.religionList });
+            dataList.Add(new MiscConfigurationModel { ControllerName = "Category", ModelData = masterData.categoryList });
+            dataList.Add(new MiscConfigurationModel { ControllerName = "Occupation", ModelData = masterData.occupationList });
+
+            model.ViewModel = dataList;
+
+            return View("~/views/master/misc.cshtml", model);
         }
     }
 }

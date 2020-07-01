@@ -1,0 +1,57 @@
+﻿@using Falcon.Entity.Master
+@model  MiscConfigurationModel
+<div class="card">
+    <div class="card-header d-flex">
+        <h4 class="mb-0">
+            @Model.ControllerName Master
+        </h4>
+        <div class="dropdown ml-auto">
+            @Html.ActionLink(" ", "Create", Model.ControllerName , null
+           , new {
+               @id = "btn-add-" + @Model.ControllerName,
+               @class = "fas fa-plus fa-lg",
+               @data_toggle = "tooltip",
+               @data_placement = "top",
+               @data_original_title = "Create" })
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered first">
+                <thead>
+                    <tr>
+                        <th class="hidden">Id</th>
+                        <th>@Model.ControllerName</th>
+                        <th class="wd-action-btn-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ModelData)
+                    {
+                        <tr>
+                            <td class="hidden">@item.Id</td>
+                            <td class="">@item.Name</td>
+                            <td class="txt-cntr-spc">
+                                @Html.ActionLink(" ", "Edit", Model.ControllerName, null
+                               , new {
+                                   @id = "btn-add-occupation",
+                                   @class = " toolbar far fa-edit fa-lg",
+                                   @data_toggle = "tooltip",
+                                   @data_placement = "top",
+                                   @data_original_title = "Edit" })
+
+                                @Html.ActionLink(" ", "Delete", Model.ControllerName, null
+                               , new {
+                                   @id = "btn-add-occupation",
+                                   @class = "toolbar fas fa-trash-alt fa-lg",
+                                   @data_toggle = "tooltip",
+                                   @data_placement = "top",
+                                   @data_original_title = "Delete" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
