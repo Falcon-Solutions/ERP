@@ -44,10 +44,8 @@ namespace Falcon.Entity.Prospect
         public string Phone { get; set; }
         public string Email { get; set; }
 
-        public string CurrentAddress { get; set; }
-        public string PeremenantAddress { get; set; }
-        public AddressDetails CurrAddress { get; set; }
-        public AddressDetails PerAddress { get; set; }
+        public AddressDetails CurrentAddress { get; set; }
+        public AddressDetails PermanentAddress { get; set; }
 
         public int ReligionId { get; set; }
         public int CasteId { get; set; }
@@ -58,8 +56,8 @@ namespace Falcon.Entity.Prospect
         public string ParentName { get; set; }
         public string ParentPhone { get; set; }
         public string ParentEmailId { get; set; }
-        public string ParentRelationship { get; set; }
-        public string ParentOccupation { get; set; }
+        public int ParentRelationshipId { get; set; }
+        public int ParentOccupationId { get; set; }
 
         public int AdmissionStatusId { get; set; }
         public string Notes { get; set; }
@@ -82,5 +80,9 @@ namespace Falcon.Entity.Prospect
         public string Caste { get; set; }
         public string Category { get; set; }
         public string BloodGrp { get; set; }
+        public string ParentOccupation { get; set; }
+        public string ParentRelationship { get; set; }
+        public string CompleteCurrentAddress { get; set; }
+        public string CompletePermanentAddress { get; set; }
     }
 }

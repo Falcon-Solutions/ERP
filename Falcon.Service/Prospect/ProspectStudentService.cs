@@ -79,7 +79,7 @@ namespace Falcon.Service.Prospect
             row["UT_Phone"] = prospectStudentModel.Phone;
             row["UT_EmailId"] = prospectStudentModel.Email;
             row["UT_CurrentAddress"] = prospectStudentModel.CurrentAddress;
-            row["UT_PermanentAddress"] = prospectStudentModel.PeremenantAddress;
+            row["UT_PermanentAddress"] = prospectStudentModel.PermanentAddress;
             row["UT_Religion"] = prospectStudentModel.ReligionId;
             row["UT_Caste"] = prospectStudentModel.CasteId;
             row["UT_Category"] = prospectStudentModel.CategoryId;
@@ -88,13 +88,20 @@ namespace Falcon.Service.Prospect
             row["UT_ParentName"] = prospectStudentModel.ParentName;
             row["UT_ParentPhone"] = prospectStudentModel.ParentPhone;
             row["UT_ParentEmailId"] = prospectStudentModel.ParentEmailId;
-            row["UT_ParentRelationship"] = prospectStudentModel.ParentRelationship;
-            row["UT_ParentOccupation"] = prospectStudentModel.ParentOccupation;
+            row["UT_ParentRelationship"] = prospectStudentModel.ParentRelationshipId;
+            row["UT_ParentOccupation"] = prospectStudentModel.ParentOccupationId;
             row["UT_ApplicationDate"] = prospectStudentModel.ApplicationDate;
             row["UT_AdmissionStatus"] = prospectStudentModel.AdmissionStatusId;
             row["UT_Notes"] = prospectStudentModel.Notes;
 
             prospectDataTable.Rows.Add(row);
+
+            DataTable addressDataTable = new DataTable("Prospect");
+            addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressId", DataType = typeof(int), Caption = "AddressId", });
+            addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressLine", DataType = typeof(string), Caption = "AddressLine", });
+            addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_CityId", DataType = typeof(int), Caption = "CityId", });
+            addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Pincode", DataType = typeof(string), Caption = "Pincode", });
+            addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressType", DataType = typeof(string), Caption = "AddressType", });
 
             var dataSet = new DataSet();
 

@@ -10,33 +10,11 @@ namespace Falcon.Entity.Address
     {
         public int Id { get; set; }
         public string AddressLine { get; set; }
-        public string Area { get; set; }
-        public string City { get; set; }
-        public string Tehsil { get; set; }
-        public string District { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
+        public int CityId { get; set; }
+        public int StateId { get; set; }
+        public int CountryId { get; set; }
         public string Pin { get; set; }
-        public int PinMasterId { get; set; }
-    }
-
-    public class AddUpdateAddress
-    {
-        public int Id { get; set; }
-        public string AddressLine { get; set; }
-        public int PinCodeId { get; set; }
-    }
-
-    public class PostalCodeMaster
-    {
-        public int Id { get; set; }
-        public string Area { get; set; }
-        public string City { get; set; }
-        public string Tehsil { get; set; }
-        public string District { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string Pin { get; set; }
+        public string AddressType { get; set; }
     }
 
     public class City
@@ -56,11 +34,6 @@ namespace Falcon.Entity.Address
     public class Country
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class AddressType
-    {
         public string Name { get; set; }
     }
 }

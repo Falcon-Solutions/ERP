@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Falcon.DataAceess.DataRepository;
+using Falcon.Entity.Address;
 using Falcon.Entity.Prospect;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Falcon.DataAceess.ProspectRepository
                                          ,ASM.AdmissionStatus
                                     FROM ProspectStudent PS
                                     JOIN AdmStatusMaster ASM
-                                        ON PS.AdmissionStatus = ASM.myId";
+                                        ON PS.AdmissionStatusId = ASM.myId";
 
             var result = dataAccess.GetDataTable(commandText, CommandType.Text, tableNames);
 
@@ -90,13 +91,13 @@ namespace Falcon.DataAceess.ProspectRepository
                 prospectStudent.DoB = Convert.ToDateTime(result.Rows[0]["DOB"].ToString());
                 prospectStudent.Phone = result.Rows[0]["Phone"].ToString();
                 prospectStudent.Email = result.Rows[0]["EmailId"].ToString();
-                prospectStudent.CurrentAddress = result.Rows[0]["CurrentAddress"].ToString();
-                prospectStudent.PeremenantAddress = result.Rows[0]["PermanentAddress"].ToString();
+                prospectStudent.CompleteCurrentAddress = result.Rows[0]["CurrentAddress"].ToString();
+                prospectStudent.CompletePermanentAddress = result.Rows[0]["PermanentAddress"].ToString();
                 prospectStudent.Religion = result.Rows[0]["religion"].ToString();
                 prospectStudent.Caste = result.Rows[0]["caste"].ToString();
                 prospectStudent.Category = result.Rows[0]["category"].ToString();
                 prospectStudent.BloodGrp = result.Rows[0]["BloodGroup"].ToString();
-                prospectStudent.AdmissionStatus = result.Rows[0]["admissionstatus"].ToString();
+                prospectStudent.AdmissionStatus = result.Rows[0]["AdmissionStatus"].ToString();
                 prospectStudent.FullName = string.Concat(result.Rows[0]["FirstName"].ToString(), " ", result.Rows[0]["MiddleName"].ToString(), " ", result.Rows[0]["LastName"].ToString());
                 prospectStudent.Notes = result.Rows[0]["Notes"].ToString();
                 prospectStudent.ParentEmailId = result.Rows[0]["ParentEmailId"].ToString();
