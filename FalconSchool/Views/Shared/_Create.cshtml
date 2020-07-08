@@ -1,0 +1,39 @@
+﻿@using Falcon.Entity;
+@using System.Reflection;
+@using System.Web.UI;
+@using System.Runtime;
+@using System.Collections.Generic;
+@using System.Dynamic;
+@using System.Linq.Expressions;
+@model dynamic
+
+@using (Html.BeginForm(@ViewData.Eval("ActionName").ToString(), @ViewData.Eval("Controller").ToString(), @ViewData.Eval("HttpVerb").ToString()))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                    <label for="validationCustom01">@ViewData.Eval("PlaceHolder")</label>
+                    <input type="text" class="form-control" id="validationCustom01" placeholder="@ViewData.Eval("PlaceHolder")" value="" required>
+                    <div class="invalid-feedback">
+                        Please enter @ViewData.Eval("PlaceHolder")
+                    </div>
+                </div>
+            </div>
+            @*<div class="form-row">
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.Name)
+                <div>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+    </div>
+}

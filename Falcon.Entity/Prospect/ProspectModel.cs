@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,19 @@ namespace Falcon.Entity.Prospect
     ///List prospect students Type:Xo
     public class ProspectStudentModel
     {
+        [RenderMode(RenderMode.HideModelOnly)]
         public int Id { get; set; }
 
+        [DisplayName("Application Number")]
         public string ApplicationNumber { get; set; }
 
+        [DisplayName("Student Name")]
         public string Name { get; set; }
 
+        [DisplayName("Application Date")]
         public DateTime ApplicationDate { get; set; }
 
+        [DisplayName("Admission Status")]
         public string AdmissionStatus { get; set; }
     }
 
@@ -36,7 +42,7 @@ namespace Falcon.Entity.Prospect
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        
+
         public int ClassId { get; set; }
         public int GenderId { get; set; }
 

@@ -1,0 +1,195 @@
+﻿@using System.Data
+@using System.Linq
+@model Falcon.Entity.Master.ClassConfiguration
+
+@{
+    ViewBag.Title = "GetSessionClassSectionMaster";
+    //ViewBag.PlaceHolder = "Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ============================================================== -->
+<!-- wrapper  -->
+<!-- ============================================================== -->
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/vendor/datatables/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/vendor/datatables/css/buttons.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/vendor/datatables/css/select.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/vendor/datatables/css/fixedHeader.bootstrap4.css">
+}
+
+
+<div class="container-fluid dashboard-content ">
+    @if (ViewBag.AlertShow)
+    {
+        <div id="alert-box" class="@(ViewBag.AlertClass)" role="alert">
+            @(ViewBag.AlertMessage)
+            <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </a>
+        </div>
+    }
+
+    <!-- ============================================================== -->
+    <!-- pageheader  -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Session-Class-Section</h2>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href=@Url.Action("Home","Dashboard",null) class="breadcrumb-link">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Session-Class-Section</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end pageheader  -->
+    <!-- ============================================================== -->
+    @*@using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()*@
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="tab-vertical">
+                <ul id="ulSessionClassSection" class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="@(ViewBag.PlaceHolder == "Session" ? "nav-link active show" : "nav-link")" id="session-vertical-tab" data-toggle="tab" href="#session-vertical" role="tab" aria-controls="session" aria-selected="true">Session</a></li>
+                    <li class="nav-item"><a class="@(ViewBag.PlaceHolder == "Class" ? "nav-link active show" : "nav-link")" id="class-vertical-tab" data-toggle="tab" href="#class-vertical" role="tab" aria-controls="class" aria-selected="true">Class</a></li>
+                    <li class="nav-item"><a class="@(ViewBag.PlaceHolder == "Section" ? "nav-link active show" : "nav-link")" id="section-vertical-tab" data-toggle="tab" href="#section-vertical" role="tab" aria-controls="section" aria-selected="true">Section</a></li>
+                </ul>
+                <div id="sessionClassSection-content" class="tab-content">
+                    <div class="@(ViewBag.PlaceHolder == "Session" ? "tab-pane fade active show" : "tab-pane fade")" id="session-vertical" role="tabpanel" aria-labelledby="session-vertical-tab">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.Partial("~/Views/Shared/_GridView.cshtml", Model.sessionList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Session" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="@(ViewBag.PlaceHolder == "Class" ? "tab-pane fade active show" : "tab-pane fade")" id="class-vertical" role="tabpanel" aria-labelledby="class-vertical-tab">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.Partial("~/Views/Shared/_GridView.cshtml", Model.classList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Class" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="@(ViewBag.PlaceHolder == "Section" ? "tab-pane fade active show" : "tab-pane fade")" id="section-vertical" role="tabpanel" aria-labelledby="section-vertical-tab">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.Partial("~/Views/Shared/_GridView.cshtml", Model.sectionList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Section" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*}*@
+</div>
+<!-- <div class="row">
+         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+             <div class="row">
+                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                     @*<p>
+                             @Html.ActionLink("Create New Session", "Create", null, new { @class = "btn btn-primary" })
+                         </p>*@
+
+                     @*@Html.Partial("~/UserControls/GridView.ascx", Model.sessionList, new ViewDataDictionary { { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })*@
+
+                     @Html.Partial("~/Views/Shared/_GridView.cshtml", Model.sessionList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Session" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })
+                     <!--Session Master End
+</div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!--Section Master Start -->
+@*<p>
+        @Html.ActionLink("Create New Section", "Create", null, new { @class = "btn btn-primary" })
+    </p>*@
+
+@*@Html.Partial("~/UserControls/GridView.ascx", Model.sectionList, new ViewDataDictionary { { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })*@
+@*@Html.Partial("~/Views/Shared/_GridView.cshtml", Model.sectionList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Class" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })*@
+<!--Section Master End
+        </div>
+    </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <!--Class Master Start-->
+@*<p>
+        @Html.ActionLink("Create New Class", "Create", null, new { @class = "btn btn-primary" })
+    </p>*@
+
+@*@Html.Partial("~/UserControls/GridView.ascx", Model.classList, new ViewDataDictionary { { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })*@
+@*@Html.Partial("~/Views/Shared/_GridView.cshtml", Model.classList, new ViewDataDictionary { { "Id", "myId" }, { "IsCreate", true }, { "PlaceHolder", "Section" }, { "IsEdit", true }, { "IsDetails", false }, { "IsDelete", true } })*@
+<!--Class Master End
+        </div>
+    </div>
+</div> -->
+<!-- ============================================================== -->
+<!-- end wrapper  -->
+<!-- ============================================================== -->
+
+
+
+@section Scripts {
+    <script src="~/Content/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/data-table.js"></script>
+    <script src="~/Content/vendor/datatables/js/jszip.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/pdfmake.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/vfs_fonts.js"></script>
+    <script src="~/Content/vendor/datatables/js/buttons.html5.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/buttons.print.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/buttons.colVis.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/dataTables.rowGroup.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/dataTables.select.min.js"></script>
+    <script src="~/Content/vendor/datatables/js/dataTables.fixedHeader.min.js"></script>
+
+    <script src="../Content/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../Content/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../Content/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <script src="../Content/vendor/parsley/parsley.js"></script>
+    <script src="../Content/libs/js/main-js.js"></script>
+    <script>
+        $('#form').parsley();
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            if ($("#alert-box").length) {
+                $("#alert-box").fadeTo(2000, 500).slideUp(700, function () {
+                    $("#alert-box").slideUp(700);
+                });
+            }
+
+        });
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}

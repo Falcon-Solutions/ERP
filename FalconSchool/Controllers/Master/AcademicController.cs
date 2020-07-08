@@ -1,9 +1,11 @@
-﻿using Falcon.Service.MasterRepository;
+﻿using Falcon.Entity.Master;
+using Falcon.Service.MasterRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace FalconSchool.Controllers.Master
 {
@@ -11,15 +13,47 @@ namespace FalconSchool.Controllers.Master
     {
         private readonly IMasterService masterService;
 
+        
+
         public AcademicController(IMasterService service)
         {
             this.masterService = service;
         }
 
-        public ActionResult Get()
+        [HttpGet]
+        public ActionResult GetSessionClassSectionMaster(string placeHolder = "Session")
         {
-            throw new NotImplementedException();
+            try
+            {
+                ViewData.Add(new KeyValuePair<string, object>("IsEdit", true));
+                ViewData.Add(new KeyValuePair<string, object>("IsDetails", false));
+                ViewData.Add(new KeyValuePair<string, object>("IsDelete", true));
+
+                var model = masterService.GetClassConfiguration();
+
+                ViewBag.Action = "get";
+                ViewBag.PlaceHolder = placeHolder;
+                ViewBag.AlertShow = false;
+                //ViewBag.AlertMessage = "Invalid operation !!!";
+                //ViewBag.AlertClass = "alert alert-warning alert-dismissible fade show";
+                ViewBag.Success = true;
+
+                return View("~/Views/Master/GetSessionClassSectionMaster.cshtml", model);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
+
+        //[ChildActionOnly]
+        //public ActionResult SessionMasterList()
+        //{
+        //    var model = masterService.GetClassConfiguration();
+
+        //    return PartialView("~/Views/Shared/_GridView.cshtml", model.sectionList);
+        //}
 
         public ActionResult GetConfig(string mode = "get", bool success = true)
         {
@@ -83,57 +117,64 @@ namespace FalconSchool.Controllers.Master
         }
 
         [HttpPost]
-        public ActionResult CreateSession()
+        public ActionResult CreateSession(FormCollection collection)
         {
-            throw new NotImplementedException();
+            var session = new SessionModel
+            {
+                Name = collection["Name"]
+            };
+
+            //var isSuccess = masterService.AddSession(session);
+
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Session" });
         }
 
         [HttpPost]
         public ActionResult EditSession()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Session" });
         }
 
         [HttpPost]
         public ActionResult DeleteSession()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Session" });
         }
 
         [HttpPost]
-        public ActionResult CreateClass()
+        public ActionResult CreateClass(FormCollection collection)
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Class" });
         }
 
         [HttpPost]
         public ActionResult EditClass()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Class" });
         }
 
         [HttpPost]
         public ActionResult DeleteClass()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Class" });
         }
 
         [HttpPost]
-        public ActionResult CreateSection()
+        public ActionResult CreateSection(FormCollection collection)
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Section" });
         }
 
         [HttpPost]
         public ActionResult EditSection()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Section" });
         }
 
         [HttpPost]
         public ActionResult DeleteSection()
         {
-            throw new NotImplementedException();
+            return RedirectToAction("GetSessionClassSectionMaster", new { placeHolder = "Section" });
         }
     }
 
