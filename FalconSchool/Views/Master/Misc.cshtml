@@ -33,6 +33,12 @@
             vertical-align: middle;
             word-spacing: 10px;
         }
+
+        .modal-content {
+            width: 600px !important;
+            margin: 30px auto !important;
+        }
+
     </style>
 }
 <!-- ============================================================== -->
@@ -40,7 +46,7 @@
 <!-- ============================================================== -->
 
     <div class="container-fluid dashboard-content ">
-        @if (ViewBag.AlertShow)
+        @*@if (ViewBag.AlertShow)
         {
             <div id="alert-box" class="@(ViewBag.AlertClass)" role="alert">
                 @(ViewBag.AlertMessage)
@@ -48,7 +54,7 @@
                     <span aria-hidden="true">&times;</span>
                 </a>
             </div>
-        }
+        }*@
         <!-- ============================================================== -->
         <!-- pageheader  -->
         <!-- ============================================================== -->
@@ -103,6 +109,12 @@
         </div>
     </div>
 
+    <div id="modal-container" class="modal fade"
+         tabindex="-1" role="dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+
 
 <!-- ============================================================== -->
 <!-- end wrapper  -->
@@ -138,7 +150,12 @@
                 $(this).addClass("selectpicker select-width");
                 $(this).selectpicker("refresh");
             });
+
+            $('a[data-original-title=Create]').click(function () {
+                $(input)
+            });
         });
 
+        
     </script>
 }

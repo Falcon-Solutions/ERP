@@ -19,11 +19,11 @@ namespace FalconSchool.Controllers.Master
         }
 
 
-        public ActionResult Create(int id)
+        public ActionResult Create()
         {
             ViewBag.Action = "Create";
             ViewBag.ControllerName = "Relationship";
-            return PartialView("_UpdateMaster");
+            return PartialView("~/Views/Shared/_UpdateMaster.cshtml");
         }
 
         public ActionResult Update(int id)
@@ -39,9 +39,9 @@ namespace FalconSchool.Controllers.Master
         {
             try
             {
-                // TODO: Add insert logic here
+                masterService.AddRelationship(collection["Name"]);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Misc");
             }
             catch
             {

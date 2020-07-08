@@ -148,9 +148,9 @@ namespace Falcon.Service.MasterRepository
             return repository.UpdateClassesMasterConfiguration(classXrefDataTable);
         }
 
-        public bool AddOcccupation(int id, string occupation)
+        public bool AddOcccupation(string occupation)
         {
-            return repository.AddOcccupation(id, occupation);
+            return repository.AddOcccupation(occupation);
         }
 
         public bool UpdateOccupation(int id, string occupation)
@@ -163,9 +163,9 @@ namespace Falcon.Service.MasterRepository
             return repository.DeleteOccupation(id);
         }
 
-        public bool AddRelationship(int id, string relationship)
+        public bool AddRelationship(string relationship)
         {
-            return repository.AddRelationship(id, relationship);
+            return repository.AddRelationship(relationship);
         }
 
         public bool UpdateRelationship(int id, string relationship)
@@ -178,9 +178,9 @@ namespace Falcon.Service.MasterRepository
             return repository.DeleteRelationship(id);
         }
 
-        public bool AddReligion(int id, string religion)
+        public bool AddReligion(string religion)
         {
-            return repository.AddReligion(id, religion);
+            return repository.AddReligion(religion);
         }
 
         public bool UpdateReligion(int id, string religion)
@@ -193,9 +193,9 @@ namespace Falcon.Service.MasterRepository
             return repository.DeleteReligion(id);
         }
 
-        public bool AddCaste(int id, string caste)
+        public bool AddCaste(string caste)
         {
-            return repository.AddCaste(id, caste);
+            return repository.AddCaste(caste);
         }
 
         public bool UpdateCaste(int id, string caste)
@@ -208,9 +208,9 @@ namespace Falcon.Service.MasterRepository
             return repository.DeleteCaste(id);
         }
 
-        public bool AddCategory(int id, string category)
+        public bool AddCategory(string category)
         {
-            return repository.AddCategory(id, category);
+            return repository.AddCategory(category);
         }
 
         public bool UpdateCategory(int id, string category)

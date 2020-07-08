@@ -26,12 +26,12 @@ namespace Falcon.DataAceess.DataRepository
             dataAccess = repository.FalconDataAccess;
         }
 
-        public bool AddCaste(int id, string caste)
+        public bool AddCaste(string caste)
         {
             try
             {
 
-                string commandText = string.Format(@"Insert INTO casteMaster values({0} ,{1})", id, caste);
+                string commandText = string.Format(@"Insert INTO casteMaster values({0})", caste);
 
                 return dataAccess.ExecuteNonQuery(commandText, CommandType.Text) > 0 ? true : false;
 
@@ -43,12 +43,12 @@ namespace Falcon.DataAceess.DataRepository
             }
         }
 
-        public bool AddCategory(int id, string category)
+        public bool AddCategory(string category)
         {
             try
             {
 
-                string commandText = string.Format(@"Insert INTO categoryMaster values({0} ,{1})", id, category);
+                string commandText = string.Format(@"Insert INTO categoryMaster values({0} )", category);
 
                 return dataAccess.ExecuteNonQuery(commandText, CommandType.Text) > 0 ? true : false;
 
@@ -60,11 +60,11 @@ namespace Falcon.DataAceess.DataRepository
             }
         }
 
-        public bool AddOcccupation(int id, string occupation)
+        public bool AddOcccupation(string occupation)
         {
             try
             {
-                string commandText = string.Format(@"Insert INTO occupationMaster values({0} ,{1})", id, occupation);
+                string commandText = string.Format(@"Insert INTO occupationMaster values({0})", occupation);
 
                 return dataAccess.ExecuteNonQuery(commandText, CommandType.Text) > 0 ? true : false;
 
@@ -77,11 +77,11 @@ namespace Falcon.DataAceess.DataRepository
 
         }
 
-        public bool AddRelationship(int id, string relationship)
+        public bool AddRelationship(string relationship)
         {
             try
             {
-                string commandText = string.Format(@"Insert INTO relationshipMaster values({0} ,{1})", id, relationship);
+                string commandText = string.Format(@"Insert INTO [dbo].[relationshipMaster](RelationShip) values('{0}')",relationship);
                 
                 return dataAccess.ExecuteNonQuery(commandText, CommandType.Text) > 0 ? true : false;
 
@@ -94,11 +94,11 @@ namespace Falcon.DataAceess.DataRepository
 
         }
 
-        public bool AddReligion(int id, string religion)
+        public bool AddReligion(string religion)
         {
             try
             {
-                string commandText = string.Format(@"Insert INTO religionMaster values({0} ,{1})", id, religion);
+                string commandText = string.Format(@"Insert INTO religionMaster values({0})",religion);
 
                 return dataAccess.ExecuteNonQuery(commandText, CommandType.Text) > 0 ? true : false;
 

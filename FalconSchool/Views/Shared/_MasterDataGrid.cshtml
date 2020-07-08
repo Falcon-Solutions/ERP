@@ -1,18 +1,23 @@
 ﻿@using Falcon.Entity.Master
 @model  MiscConfigurationModel
+
+@Html.Hidden("CurrentGridAction")
 <div class="card">
     <div class="card-header d-flex">
         <h4 class="mb-0">
             @Model.ControllerName Master
         </h4>
         <div class="dropdown ml-auto">
-            @Html.ActionLink(" ", "Create", Model.ControllerName , null
-           , new {
-               @id = "btn-add-" + @Model.ControllerName,
-               @class = "fas fa-plus fa-lg",
-               @data_toggle = "tooltip",
-               @data_placement = "top",
-               @data_original_title = "Create" })
+            @Html.ActionLink(" ", "Create", Model.ControllerName, null
+    , new {
+        @id = "btn-add-" + @Model.ControllerName,
+        @class = "fas fa-plus fa-lg",
+
+        @data_placement = "top",
+        @data_original_title = "Create",
+        @data_toggle = "modal",
+        @data_target = "#" + @Model.ControllerName + "CreateModal",
+    })
         </div>
     </div>
     <div class="card-body">
@@ -32,26 +37,92 @@
                             <td class="hidden">@item.Id</td>
                             <td class="">@item.Name</td>
                             <td class="txt-cntr-spc">
-                                @Html.ActionLink(" ", "Edit", Model.ControllerName, null
-                               , new {
+                                @Html.ActionLink(" ", "Edit", Model.ControllerName, new { id= item.Id, name = item.Name },
+                               new {
                                    @id = "btn-add-occupation",
                                    @class = " toolbar far fa-edit fa-lg",
-                                   @data_toggle = "tooltip",
-                                   @data_placement = "top",
-                                   @data_original_title = "Edit" })
+                                   @data_original_title = "Edit",
+                                   @data_toggle = "modal",
+                                   @data_target = "#UpdateModal"
+                               })
 
-                                @Html.ActionLink(" ", "Delete", Model.ControllerName, null
-                               , new {
-                                   @id = "btn-add-occupation",
-                                   @class = "toolbar fas fa-trash-alt fa-lg",
-                                   @data_toggle = "tooltip",
-                                   @data_placement = "top",
-                                   @data_original_title = "Delete" })
+                                @Html.ActionLink(" ", "Delete", Model.ControllerName, null,
+                               new {
+                                    @id = "btn-add-occupation",
+                                    @class = "toolbar fas fa-trash-alt fa-lg",
+                                    @data_original_title = "Delete",
+                                    @data_toggle = "modal",
+                                    @data_target = "#CreateUpdateModal"
+                                })
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+@*Modal*@
+
+<div class="modal fade" id=@(Model.ControllerName + "CreateModal") tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New @Model.ControllerName</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            @using (Html.BeginForm("Create", Model.ControllerName, "POST"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            @*<input type="text" class="form-control"  placeholder="" value="" required>*@
+                            @Html.TextBox("Name", null, new { @class = "form-control", @id = ("txt_" + Model.ControllerName), @placeholder = "Please enter " + Model.ControllerName.ToLower(), @required = "required" })
+                            <div class="invalid-feedback">
+                                Please enter @Model.ControllerName.ToLower()
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                        <button class="btn btn-primary" type="submit">Create</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id=@(Model.ControllerName + "UpdateModal") tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New @Model.ControllerName</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            @using (Html.BeginForm("Update", Model.ControllerName, "POST"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            @*<input type="text" class="form-control"  placeholder="" value="" required>*@
+                            @Html.TextBox("Name", null, new { @class = "form-control", @id = ("txt_" + Model.ControllerName), @placeholder = "Please enter " + Model.ControllerName.ToLower(), @required = "required" })
+                            <div class="invalid-feedback">
+                                Please enter @Model.ControllerName.ToLower()
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
