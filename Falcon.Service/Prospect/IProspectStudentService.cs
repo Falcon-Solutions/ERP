@@ -9,9 +9,9 @@ namespace Falcon.Service.Prospect
 {
     public interface IProspectStudentService
     {
-        List<ProspectStudentModel> GetProspectStudentList();
-        ViewProspectStudentModel GetProspectStudentDetailsById(int Id);
+        List<AppliedProspectModel> GetProspectStudentList();
+        ProspectModel GetProspectStudentDetailsById(int Id);
         bool DeleteProspectStudent(int ProspectStudentId);
-        bool AddProspectStudent(AddProspectStudentModel prospectStudentModel);
+        bool AddProspectStudent(ProspectModel prospectStudentModel);
     }
 }

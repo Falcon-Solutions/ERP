@@ -644,6 +644,8 @@
     <Content Include="Views\Master\ClassConfig.cshtml" />
     <Content Include="Views\LiveSearch.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <Content Include="Views\ProspectStudent\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

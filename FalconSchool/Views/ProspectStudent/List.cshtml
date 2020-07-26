@@ -1,4 +1,4 @@
-﻿@model IList<Falcon.Entity.Prospect.ProspectStudentModel>
+﻿@model List<Falcon.Entity.Prospect.AppliedProspectModel>
 
 @{
     ViewBag.Title = "List";
@@ -64,10 +64,7 @@
                                     <td>@item.ApplicationDate</td>
                                     <td>@item.AdmissionStatus</td>
                                     <td class="wd-action-btn-1">
-                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })*@
                                         @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
-                                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })*@
-
                                     </td>
                                 </tr>
                             }

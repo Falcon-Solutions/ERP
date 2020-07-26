@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{1A6B696E-C24B-451B-B481-7B0FE1B9AD7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Common", "Falcon.Common\Falcon.Common.csproj", "{7D39860C-D99A-43D0-BF99-F5C1FA8AFAA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{1A6B696E-C24B-451B-B481-7B0FE1B9AD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A6B696E-C24B-451B-B481-7B0FE1B9AD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A6B696E-C24B-451B-B481-7B0FE1B9AD7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D39860C-D99A-43D0-BF99-F5C1FA8AFAA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D39860C-D99A-43D0-BF99-F5C1FA8AFAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D39860C-D99A-43D0-BF99-F5C1FA8AFAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D39860C-D99A-43D0-BF99-F5C1FA8AFAA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

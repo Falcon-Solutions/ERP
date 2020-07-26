@@ -8,7 +8,7 @@ using Falcon.Entity.Address;
 namespace Falcon.Entity.Prospect
 {
     ///List prospect students Type:Xo
-    public class ProspectStudentModel
+    public class AppliedProspectModel
     {
         public int Id { get; set; }
 
@@ -21,18 +21,18 @@ namespace Falcon.Entity.Prospect
         public string AdmissionStatus { get; set; }
     }
 
-    public class ProspectStudentListModel
-    {
-        public List<ProspectStudentModel> ProspectStudentList { get; set; }
-    }
-
     /// Add prospect student Type:Xi
-    public class AddProspectStudentModel
+    public class ProspectModel
     {
+        public int Id { get; set; }
         public string ApplicationNumber { get; set; }
         public DateTime ApplicationDate { get; set; }
 
-        public string FullName { get; set; }
+        public string FullName
+        {
+            get { return string.Format("{0} {1} {2}", FirstName, MiddleName, LastName); }
+        }
+
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -46,6 +46,7 @@ namespace Falcon.Entity.Prospect
 
         public AddressDetails CurrentAddress { get; set; }
         public AddressDetails PermanentAddress { get; set; }
+        public bool IsPermanentSameAsCurrent { get; set; }
 
         public int ReligionId { get; set; }
         public int CasteId { get; set; }
@@ -61,28 +62,7 @@ namespace Falcon.Entity.Prospect
 
         public int AdmissionStatusId { get; set; }
         public string Notes { get; set; }
-    }
 
-    /// Update prospect student Type:Xi
-    public class UpdateProspectStudentModel : AddProspectStudentModel
-    {
-        public int Id { get; set; }
-    }
-
-    ///View prospect student by Application Id Type:Xo
-    public class ViewProspectStudentModel : AddProspectStudentModel
-    {
-        public int Id { get; set; }
-        public string AdmissionStatus { get; set; }
-        public string ClassName { get; set; }
-        public string Gender { get; set; }
-        public string Religion { get; set; }
-        public string Caste { get; set; }
-        public string Category { get; set; }
-        public string BloodGrp { get; set; }
-        public string ParentOccupation { get; set; }
-        public string ParentRelationship { get; set; }
-        public string CompleteCurrentAddress { get; set; }
-        public string CompletePermanentAddress { get; set; }
+        public FormAction ActionType { get; set; }
     }
 }

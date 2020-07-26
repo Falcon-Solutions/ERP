@@ -1,4 +1,7 @@
-﻿@model Falcon.Entity.Prospect.AddProspectStudentModel
+﻿@using Falcon.Service.Common;
+@using Constants;
+@using Falcon.Entity.Address;
+@model Falcon.Entity.Prospect.ProspectModel
 
 @{
     ViewBag.Title = "Add";
@@ -80,12 +83,12 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Add Prospect Student</h2>
+                <h2 class="pageheader-title">@Html.Raw(ViewBag.RedirectAction) Prospect Student</h2>
                 <div class="page-breadcrumb">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">@Html.ActionLink("Prospect Student List", "List")</li>
-                            <li class="breadcrumb-item active" aria-current="page">Add Prospect Student</li>
+                            <li class="breadcrumb-item active" aria-current="page">@Html.Raw(ViewBag.RedirectAction) Prospect Student</li>
                         </ol>
                     </nav>
                 </div>
@@ -98,7 +101,8 @@
     <!-- ============================================================== -->
     <!-- Form Begin Create Prospect Student -->
     <!-- ============================================================== -->
-    @using (Html.BeginForm("Create", "ProspectStudent", "HttpPost"))
+
+    @using (Html.BeginForm((string)ViewBag.RedirectAction, "ProspectStudent", new { arg = Model }, FormMethod.Post, null))
     {
         <!-- Generate antiforge token to submit post form -->
         @Html.AntiForgeryToken()
@@ -125,11 +129,35 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade fix-min-height show active" id="basic-details" role="tabpanel" aria-labelledby="basic-details-tab">
+                    @{ if (ViewBag.RedirectAction == "Edit")
+                        {
+                            <div class="form-row">
+                                <div class="form-group col-4">
+                                    @Html.LabelFor(model => model.ApplicationDate)
+                                    <div>
+                                        @Html.EditorFor(model => model.ApplicationDate, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                                <div class="form-group col-4">
+                                    @Html.LabelFor(model => model.ApplicationNumber)
+                                    <div>
+                                        @Html.EditorFor(model => model.ApplicationNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                                <div class="form-group col-4">
+                                    @Html.LabelFor(model => model.AdmissionStatusId)
+                                    <div>
+                                        @Html.DropDownListFor(model => model.AdmissionStatusId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                     <div class="form-row">
                         <div class="form-group col-4">
                             @Html.LabelFor(model => model.FirstName)
                             <div>
-                                @Html.EditorFor(model =>  model.FirstName, new { @class = "form-control", autocomplete = "off" })
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -151,9 +179,16 @@
                     <div class="form-row">
                         <div class="form-group col-5">
                             @Html.Label("DoB")
-                            <div class="input-group date" id="DoBpicker" data-target-input="nearest">
-                                @Html.TextBoxFor(model => model.DoB, new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#DoBpicker" })
-                                <div class="input-group-append" data-target="#DoBpicker" data-toggle="datetimepicker">
+                            @*<div class="input-group date" id="DoBpicker" data-target-input="nearest">
+                                    @Html.TextBoxFor(model => model.DoB, new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#DoBpicker" })
+                                    <div class="input-group-append" data-target="#DoBpicker" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>*@
+                            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                @*<input type="text" id="DoB" name="DoB" class="form-control datetimepicker-input" data-target="#datetimepicker4" />*@
+                                @Html.TextBoxFor(model => model.DoB, new { @class = "form-control datetimepicker-input", autocomplete = "off", data_target = "#datetimepicker4" })
+                                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                 </div>
                             </div>
@@ -161,45 +196,45 @@
                         <div class="form-group col-2">
                             @Html.Label("Gender")
                             <div>
-                                @Html.DropDownList("Gender", new SelectList(ViewBag.GenderMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.GenderId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.GenderMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-2">
                             @Html.Label("Blood Group")
                             <div>
-                                @Html.DropDownList("BloodGroup", new SelectList(ViewBag.BloodGrpMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.BloodGrpId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.BloodGrpId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-3">
                             @Html.Label("Class Applying")
                             <div>
-                                @Html.DropDownList("ClassList", new SelectList(ViewBag.ClassMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.ClassId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.ClassMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-4">
-                            @Html.LabelFor(model => model.Phone)
-                            <div>
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })*@
-                            </div>
-                        </div>
-                        <div class="form-group col-4">
+                        <div class="form-group col-6">
                             @Html.LabelFor(model => model.Email)
                             <div>
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="form-group col-4">
+                        <div class="form-group col-3">
+                            @Html.LabelFor(model => model.Phone)
+                            <div>
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-3">
                             @Html.LabelFor(model => model.AadharId)
                             <div>
-                                @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })*@
+                                @Html.EditorFor(model => model.AadharId, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.AadharId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -208,8 +243,7 @@
                             @Html.Label("Upload Photo")
                             <div>
                                 <div class="input-group mb-3 px-2 py-2 shadow-sm bg-light">
-                                    @Html.TextBox("upload", null, new { @class = "form-control border-0", type = "file" , @onchange = "readURL(this);", @capture = "camera" })
-                                    @*<input id="upload" type="file" onchange="readURL(this);" class="form-control border-0" capture="camera">*@
+                                    @Html.TextBox("upload", null, new { @class = "form-control border-0", type = "file", @onchange = "readURL(this);", @capture = "camera", @autocomplete = "off" })
                                     <label id="upload-label" for="upload" class="font-weight-light text-muted">Please select file...</label>
                                     <div class="input-group-append">
                                         <label for="upload" class="btn btn-light m-0 px-4"> <i class="fas fa-cloud-alt mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Browse Photo</small></label>
@@ -240,14 +274,20 @@
                             </div>
                             <div class="card-body">
                                 @{
-                                    Html.RenderPartial("_Address", "Current" as string);
+                                    if (ViewBag.RedirectAction == "Edit")
+                                    {
+                                        @Html.Partial("_Address", Model.CurrentAddress, new ViewDataDictionary() { TemplateInfo = new TemplateInfo() { HtmlFieldPrefix = "CurrentAddress" } })
+                                    }
+                                    else
+                                    {
+                                        @Html.Partial("_Address", new ViewDataDictionary() { TemplateInfo = new TemplateInfo() { HtmlFieldPrefix = "CurrentAddress" } })
+                                    }
                                 }
                                 <div class="">
                                     <div class="form-row">
                                         <label class="custom-control custom-checkbox">
-                                            @Html.CheckBox("chkbx-copy-to-perm", new { @class = "form-control custom-control-input" })
+                                            @Html.CheckBoxFor(model => model.IsPermanentSameAsCurrent, new { @class = "form-control custom-control-input" })
                                             <span class="custom-control-label">Permanent address is same as current address</span>
-                                            @*<input id="chkbx-copy-to-perm" type="checkbox" class="custom-control-input"><span class="custom-control-label">Permanent address is same as current address</span>*@
                                         </label>
                                     </div>
                                 </div>
@@ -256,7 +296,7 @@
                         <div class="col-1">
 
                         </div>
-                        <div id="card-permanent-address" class="card col-5">
+                        <div id="card-permanent-address" class="card col-5" @(Model != null && Model.IsPermanentSameAsCurrent ? "hidden" : "")>
                             <div class="card-header d-flex">
                                 <h4 class="mb-0">Permenant Addresss</h4>
                                 <div class="dropdown ml-auto">
@@ -265,7 +305,14 @@
                             </div>
                             <div class="card-body">
                                 @{
-                                    Html.RenderPartial("_Address", "Permenent" as string);
+                                    if (ViewBag.RedirectAction == "Edit" && Model.PermanentAddress != null)
+                                    {
+                                        @Html.Partial("_Address", Model.PermanentAddress, new ViewDataDictionary() { TemplateInfo = new TemplateInfo() { HtmlFieldPrefix = "PermanentAddress" } })
+                                    }
+                                    else
+                                    {
+                                        @Html.Partial("_Address", new ViewDataDictionary() { TemplateInfo = new TemplateInfo() { HtmlFieldPrefix = "PermanentAddress" } })
+                                    }
                                 }
                             </div>
                         </div>
@@ -277,24 +324,24 @@
                         <div class="form-group col-3">
                             @Html.Label("Parent Name")
                             <div>
-                                @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })*@
-                            </div>
-                        </div>
-
-                        <div class="form-group col-2">
-                            @Html.Label("Parent Phone")
-                            <div>
-                                @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })*@
+                                @Html.EditorFor(model => model.ParentName, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.ParentName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group col-3">
+                            @Html.Label("Parent Phone")
+                            <div>
+                                @Html.EditorFor(model => model.ParentPhone, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.ParentPhone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-6">
                             @Html.Label("Parent Email")
                             <div>
-                                @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })*@
+                                @Html.EditorFor(model => model.ParentEmailId, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.ParentEmailId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -302,15 +349,15 @@
                         <div class="form-group col-3">
                             @Html.Label("Parent Relationship")
                             <div>
-                                @Html.DropDownList("Relationship", new SelectList(ViewBag.RelationshipMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.ParentRelationship, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.ParentRelationshipId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.RelationshipMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.ParentRelationshipId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-3">
                             @Html.Label("Parent Occupation")
                             <div>
-                                @Html.DropDownList("Occupation", new SelectList(ViewBag.OccupationMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.ParentOccupationId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.OccupationMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.ParentOccupationId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -320,23 +367,23 @@
                         <div class="form-group col-3">
                             @Html.Label("Religion")
                             <div>
-                                @Html.DropDownList("Religion", new SelectList(ViewBag.ReligionMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.ReligionId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.ReligionMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group col-3">
                             @Html.Label("Caste")
                             <div>
-                                @Html.DropDownList("Caste", new SelectList(ViewBag.CasteMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.CasteId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CasteMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.CasteId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-3">
                             @Html.Label("Category")
                             <div>
-                                @Html.DropDownList("Category", new SelectList(ViewBag.CategoryMaster, "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
-                                @*@Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })*@
+                                @Html.DropDownListFor(model => model.CategoryId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CategoryMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static" })
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -344,8 +391,8 @@
                         <div class="form-group col-6">
                             @Html.Label("Notes(if any)")
                             <div>
-                                @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { @class = "form-control" })
-                                @*@Html.ValidationMessageFor(model => model.PeremenantAddress, "", new { @class = "text-danger" })*@
+                                @Html.TextAreaFor(model => model.Notes, 5, 1, htmlAttributes: new { @class = "form-control", @autocomplete = "off" })
+                                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -353,7 +400,7 @@
                     <div class="form-row">
                         <div class="form-group col-auto mr-2">
                             <div>
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <input type="submit" @(ViewBag.RedirectAction == "Edit" ? "value=Save" : "value=Create") class="btn btn-primary" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -398,19 +445,19 @@
     </script>
 
     <script>
-        
+
 
         $(document).ready(function () {
 
 
             //Hide permenant address if current address is same.
-            $('#chkbx-copy-to-perm').click(function () {
+            $('#IsPermanentSameAsCurrent').click(function () {
                 if ($(this).prop("checked") == true) {
-                    $('#card-permanent-address').hide();
+                    $('#card-permanent-address').attr("hidden", true);
                     console.log("Checkbox is checked.");
                 }
                 else if ($(this).prop("checked") == false) {
-                    $('#card-permanent-address').show();
+                    $('#card-permanent-address').attr("hidden", false);
                 }
             });
         });

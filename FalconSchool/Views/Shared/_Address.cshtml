@@ -1,17 +1,39 @@
-﻿@model string
+﻿@using Falcon.Service.Common;
+@using FalconSchool.Caching;
+@using Constants;
+@model Falcon.Entity.Address.AddressDetails
+
+@{
+    //Prepare States and Cities for update action
+    var cities = new List<SelectListItem> { };
+    if (Model != null)
+    {
+        cities.AddRange(new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CityMaster), "Id", "Name"));
+    }
+
+    var states = new List<SelectListItem> { };
+    if (Model != null)
+    {
+        states.AddRange(new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster), "Id", "Name"));
+    }
+
+}
 
 <div class="form-row">
     <div class="form-group col">
         <label class="col-form-label">Address</label>
-        <textarea id="txt-Area-Details" class="form-control" rows="3"></textarea>
+        @Html.TextAreaFor(model => model.AddressLine, new { @class = "form-control", @rows = "3" })
     </div>
 </div>
 <div class="form-row">
     <div class="form-group col">
         @Html.Label("Country")
         <div>
-            @Html.DropDownList(@Model + "_Dropdown_Country"
-            , new SelectList(ViewBag.CountryMaster, "Text", "Value")
+            @{
+                var controlPropertyPrefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+            }
+            @Html.DropDownListFor(model => model.CountryId
+            , new SelectList(MasterDataCache.GetCachedDataByKey(CacheKeyConstants.CountryMaster), "Text", "Value")
             , new {
                 @class = "form-control selectpicker"
                     , @data_size = "5"
@@ -19,7 +41,7 @@
                     , @data_display = "static"
                     , @title = "--Please Select--"
                     , @data_live_search = "true"
-                    , @onchange = "fillStates("+"'#"+ @Model + "_Dropdown_Country"+"'" + ",'#" + @Model + "_Dropdown_State"+ "'" + ");"
+                    , @onchange = "fillStates("+"'#"+ @controlPropertyPrefix + "_CountryId" + "'" + ",'#" + @controlPropertyPrefix + "_StateId" + "'" + ");"
             }
            )
         </div>
@@ -29,8 +51,8 @@
     <div class="form-group col">
         @Html.Label("State")
         <div>
-            @Html.DropDownList(@Model + "Dropdown_State"
-           , new List<SelectListItem> { }
+            @Html.DropDownListFor(model => model.StateId
+           , states
            , new {
                @class = "form-control selectpicker"
                , @data_size = "5"
@@ -39,8 +61,7 @@
                , @title = "--Please Select--"
                , @disabled = "disabled"
                , @data_live_search = "true"
-               , @Id = @Model + "_Dropdown_State"
-               , @onchange = "fillCities(" + "'#" + @Model + "_Dropdown_State" + "'" + ",'#" + @Model + "_Dropdown_City" + "'" + ");"
+               , @onchange = "fillCities(" + "'#" + @controlPropertyPrefix + "_StateId" + "'" + ",'#" + @controlPropertyPrefix + "_CityId" + "'" + ");"
            })
         </div>
     </div>
@@ -49,8 +70,8 @@
     <div class="form-group col">
         @Html.Label("City")
         <div>
-            @Html.DropDownList(@Model + "Dropdown_City"
-           , new List<SelectListItem> { }
+            @Html.DropDownListFor(model => model.CityId
+           , cities
            , new {
                @class = "form-control selectpicker"
                , @data_size = "5"
@@ -59,7 +80,6 @@
                , @title = "--Please Select--"
                , @disabled = "disabled"
                , @data_live_search = "true"
-               , @Id = @Model + "_Dropdown_City"
            })
         </div>
     </div>
@@ -68,7 +88,7 @@
     <div class="form-group col">
         @Html.Label("Pincode")
         <div>
-            @Html.TextBox(@Model + "_TxtBox_Pincode", null, new { @class = "form-control ls-2 pincode-mask", @placeholder = "" })
+            @Html.TextBoxFor(model => model.Pin, null, new { @class = "form-control ls-2 pincode-mask", @placeholder = "" })
         </div>
     </div>
 </div>

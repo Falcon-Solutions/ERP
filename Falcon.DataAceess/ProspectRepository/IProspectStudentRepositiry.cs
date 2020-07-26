@@ -10,9 +10,9 @@ namespace Falcon.DataAceess.ProspectRepository
 {
     public interface IProspectStudentRepository
     {
-        List<ProspectStudentModel> GetAllProspectStudent();
+        List<AppliedProspectModel> GetAllProspectStudent();
 
-        ViewProspectStudentModel ViewProspectStudent(int Id);
+        ProspectModel GetProspect(int Id);
 
         bool AddProspectStudent(DataSet dataSet);
 

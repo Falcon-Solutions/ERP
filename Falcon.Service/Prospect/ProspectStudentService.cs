@@ -8,6 +8,7 @@ using Falcon.DataAceess.ProspectRepository;
 using Configuration;
 using System.Data;
 using Utility;
+using Falcon.Entity;
 
 namespace Falcon.Service.Prospect
 {
@@ -23,14 +24,14 @@ namespace Falcon.Service.Prospect
             this.appConfig = appConfig;
         }
 
-        public List<ProspectStudentModel> GetProspectStudentList()
+        public List<AppliedProspectModel> GetProspectStudentList()
         {
             return repository.GetAllProspectStudent();
         }
 
-        public ViewProspectStudentModel GetProspectStudentDetailsById(int prospectStudentId)
+        public ProspectModel GetProspectStudentDetailsById(int prospectStudentId)
         {
-            return repository.ViewProspectStudent(prospectStudentId);
+            return repository.GetProspect(prospectStudentId);
         }
 
         public bool DeleteProspectStudent(int prospectStudentId)
@@ -38,7 +39,7 @@ namespace Falcon.Service.Prospect
             return repository.DeleteProspectStudent(prospectStudentId);
         }
 
-        public bool AddProspectStudent(AddProspectStudentModel prospectStudentModel)
+        public bool AddProspectStudent(ProspectModel prospectStudentModel)
         {
             //Generate Datatable which match the UserDefinedTableType "UT_ProspectStudent"
 
@@ -47,65 +48,84 @@ namespace Falcon.Service.Prospect
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_FirstName", DataType = typeof(string), Caption = "FirstName", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_MiddleName", DataType = typeof(string), Caption = "MiddleName", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_LastName", DataType = typeof(string), Caption = "LastName", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Class", DataType = typeof(decimal), Caption = "ClassId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Sex", DataType = typeof(decimal), Caption = "GenderId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Class", DataType = typeof(int), Caption = "ClassId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Sex", DataType = typeof(int), Caption = "GenderId", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_DOB", DataType = typeof(DateTime), Caption = "DOB", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Phone", DataType = typeof(string), Caption = "PhoneNumber", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_EmailId", DataType = typeof(string), Caption = "EmailId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_CurrentAddress", DataType = typeof(string), Caption = "CurrentAddress", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_PermanentAddress", DataType = typeof(string), Caption = "PermanentAddress", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Religion", DataType = typeof(decimal), Caption = "ReligionId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Caste", DataType = typeof(decimal), Caption = "CasteId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Category", DataType = typeof(decimal), Caption = "CategoryId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_BloodGrp", DataType = typeof(decimal), Caption = "BloodGrpId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Religion", DataType = typeof(int), Caption = "ReligionId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Caste", DataType = typeof(int), Caption = "CasteId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Category", DataType = typeof(int), Caption = "CategoryId", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_BloodGrp", DataType = typeof(int), Caption = "BloodGrpId", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AadharId", DataType = typeof(string), Caption = "AadharId", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentName", DataType = typeof(string), Caption = "ParentName", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentPhone", DataType = typeof(string), Caption = "ParentName", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentEmailId", DataType = typeof(string), Caption = "ParentEmailId", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentRelationship", DataType = typeof(string), Caption = "ParentRelationship", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentOccupation", DataType = typeof(string), Caption = "ParentOccupation", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentRelationship", DataType = typeof(int), Caption = "ParentRelationship", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ParentOccupation", DataType = typeof(int), Caption = "ParentOccupation", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_ApplicationDate", DataType = typeof(DateTime), Caption = "ApplicationDate", });
-            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AdmissionStatus", DataType = typeof(decimal), Caption = "AdmissionStatus", });
+            prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AdmissionStatus", DataType = typeof(int), Caption = "AdmissionStatus", });
             prospectDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Notes", DataType = typeof(string), Caption = "Notes", });
 
-            DataRow row = prospectDataTable.NewRow();
-            row["UT_ApplicationNo"] = NumberGenerator.RandomDigits(8);
-            row["UT_FirstName"] = prospectStudentModel.FirstName;
-            row["UT_MiddleName"] = prospectStudentModel.MiddleName;
-            row["UT_LastName"] = prospectStudentModel.LastName;
-            row["UT_Class"] = prospectStudentModel.ClassId;
-            row["UT_Sex"] = prospectStudentModel.GenderId;
-            row["UT_DOB"] = prospectStudentModel.DoB;
-            row["UT_Phone"] = prospectStudentModel.Phone;
-            row["UT_EmailId"] = prospectStudentModel.Email;
-            row["UT_CurrentAddress"] = prospectStudentModel.CurrentAddress;
-            row["UT_PermanentAddress"] = prospectStudentModel.PermanentAddress;
-            row["UT_Religion"] = prospectStudentModel.ReligionId;
-            row["UT_Caste"] = prospectStudentModel.CasteId;
-            row["UT_Category"] = prospectStudentModel.CategoryId;
-            row["UT_BloodGrp"] = prospectStudentModel.BloodGrpId;
-            row["UT_AadharId"] = prospectStudentModel.AadharId;
-            row["UT_ParentName"] = prospectStudentModel.ParentName;
-            row["UT_ParentPhone"] = prospectStudentModel.ParentPhone;
-            row["UT_ParentEmailId"] = prospectStudentModel.ParentEmailId;
-            row["UT_ParentRelationship"] = prospectStudentModel.ParentRelationshipId;
-            row["UT_ParentOccupation"] = prospectStudentModel.ParentOccupationId;
-            row["UT_ApplicationDate"] = prospectStudentModel.ApplicationDate;
-            row["UT_AdmissionStatus"] = prospectStudentModel.AdmissionStatusId;
-            row["UT_Notes"] = prospectStudentModel.Notes;
+            DataRow prospectRow = prospectDataTable.NewRow();
+            prospectRow["UT_ApplicationNo"] = NumberGenerator.RandomDigits(8);
+            prospectRow["UT_FirstName"] = prospectStudentModel.FirstName;
+            prospectRow["UT_MiddleName"] = prospectStudentModel.MiddleName;
+            prospectRow["UT_LastName"] = prospectStudentModel.LastName;
+            prospectRow["UT_Class"] = prospectStudentModel.ClassId;
+            prospectRow["UT_Sex"] = prospectStudentModel.GenderId;
+            prospectRow["UT_DOB"] = prospectStudentModel.DoB.Date;
+            prospectRow["UT_Phone"] = prospectStudentModel.Phone;
+            prospectRow["UT_EmailId"] = prospectStudentModel.Email;
+            prospectRow["UT_Religion"] = prospectStudentModel.ReligionId;
+            prospectRow["UT_Caste"] = prospectStudentModel.CasteId;
+            prospectRow["UT_Category"] = prospectStudentModel.CategoryId;
+            prospectRow["UT_BloodGrp"] = prospectStudentModel.BloodGrpId;
+            prospectRow["UT_AadharId"] = prospectStudentModel.AadharId;
+            prospectRow["UT_ParentName"] = prospectStudentModel.ParentName;
+            prospectRow["UT_ParentPhone"] = prospectStudentModel.ParentPhone;
+            prospectRow["UT_ParentEmailId"] = prospectStudentModel.ParentEmailId;
+            prospectRow["UT_ParentRelationship"] = prospectStudentModel.ParentRelationshipId;
+            prospectRow["UT_ParentOccupation"] = prospectStudentModel.ParentOccupationId;
+            prospectRow["UT_ApplicationDate"] = DateTime.Now.Date;
+            prospectRow["UT_AdmissionStatus"] = Convert.ToInt32(AdmissionStatus.Applied);
+            prospectRow["UT_Notes"] = prospectStudentModel.Notes;
 
-            prospectDataTable.Rows.Add(row);
+            prospectDataTable.Rows.Add(prospectRow);
 
-            DataTable addressDataTable = new DataTable("Prospect");
+            DataTable addressDataTable = new DataTable("Address");
             addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressId", DataType = typeof(int), Caption = "AddressId", });
             addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressLine", DataType = typeof(string), Caption = "AddressLine", });
             addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_CityId", DataType = typeof(int), Caption = "CityId", });
             addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_Pincode", DataType = typeof(string), Caption = "Pincode", });
             addressDataTable.Columns.Add(new DataColumn { ColumnName = "UT_AddressType", DataType = typeof(string), Caption = "AddressType", });
 
+            DataRow currentAddressRow = addressDataTable.NewRow();
+            currentAddressRow["UT_AddressId"] = prospectStudentModel.CurrentAddress.Id;
+            currentAddressRow["UT_AddressLine"] = prospectStudentModel.CurrentAddress.AddressLine;
+            currentAddressRow["UT_CityId"] = prospectStudentModel.CurrentAddress.CityId;
+            currentAddressRow["UT_Pincode"] = prospectStudentModel.CurrentAddress.Pin;
+            currentAddressRow["UT_AddressType"] = AddressType.Current.ToString();
+
+            addressDataTable.Rows.Add(currentAddressRow);
+
+            if (!prospectStudentModel.IsPermanentSameAsCurrent)
+            {
+                DataRow permAddressRow = addressDataTable.NewRow();
+                permAddressRow["UT_AddressId"] = prospectStudentModel.PermanentAddress.Id;
+                permAddressRow["UT_AddressLine"] = prospectStudentModel.PermanentAddress.AddressLine;
+                permAddressRow["UT_CityId"] = prospectStudentModel.PermanentAddress.CityId;
+                permAddressRow["UT_Pincode"] = prospectStudentModel.PermanentAddress.Pin;
+                permAddressRow["UT_AddressType"] = AddressType.Permanent.ToString();
+
+                addressDataTable.Rows.Add(permAddressRow);
+            }
+
+
             var dataSet = new DataSet();
 
             dataSet.Tables.Add(prospectDataTable);
+            dataSet.Tables.Add(addressDataTable);
 
             return repository.AddProspectStudent(dataSet);
         }

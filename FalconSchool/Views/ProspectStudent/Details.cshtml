@@ -1,4 +1,8 @@
-﻿@model Falcon.Entity.Prospect.ViewProspectStudentModel
+﻿@using Falcon.Service.Common;
+@using Constants;
+@using Falcon.Entity.Address;
+
+@model Falcon.Entity.Prospect.ProspectModel
 
 @{
     ViewBag.Title = "Details";
@@ -38,30 +42,22 @@
                 <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ApplicationNumber)" disabled>
             </div>
             <div class="form-group col-md-2">
-                <label for="inputPassword4">Application Date</label>
+                <label for="inputPassword4">Applied On</label>
                 <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ApplicationDate)" disabled />
             </div>
             <div class="form-group col-md-2">
-                <label for="inputPassword4">First Name</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.FirstName)" disabled>
+                <label for="inputEmail4">Admission Status</label>
+                @Html.DropDownListFor(model => model.AdmissionStatusId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.AdmStatusMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
             <div class="form-group col-md-2">
-                <label for="inputPassword4">Middle Name</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.MiddleName)" disabled>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputPassword4">Last Name</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.LastName)" disabled>
+                <label for="inputPassword4">Applied For</label>
+                @Html.DropDownListFor(model => model.ClassId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.ClassMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
-                <label for="inputEmail4">Admission Status</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.AdmissionStatus)" disabled>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputPassword4">Class Applied</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ClassName)" disabled>
+                <label for="inputPassword4">Name</label>
+                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.FullName)" disabled />
             </div>
             <div class="form-group col-md-2">
                 <label for="inputPassword4">DOB</label>
@@ -69,62 +65,81 @@
             </div>
             <div class="form-group col-md-2">
                 <label for="inputPassword4">Gender</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.Gender)" disabled>
+                @Html.DropDownListFor(model => model.GenderId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.GenderMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
             <div class="form-group col-md-2">
                 <label for="inputPassword4">Bloodgroup</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.BloodGrp)" disabled>
+                @Html.DropDownListFor(model => model.BloodGrpId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.BloodGrpMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-5">
+            <div class="form-group col-4">
                 <div class="form-row">
-                    <label for="inputAddress">Current Address</label>
-                    <textarea type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentAddress)" disabled></textarea>
+                    <div class="form-group col-md-12">
+                        <label for="inputAddress">Current Address</label>
+                        <textarea type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentAddress.AddressLine)" disabled></textarea>
+                    </div>
                 </div>
-                <div class="form-row pt-2">
-                    <div class="form-group col-md-5">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
                         <label for="inputCity">City</label>
-                        <input type="text" class="form-control" placeholder="City" disabled>
+                        @Html.DropDownListFor(model => model.CurrentAddress.CityId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CityMaster), "Id", "Name"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
                     </div>
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-3">
                         <label for="inputState">State</label>
-                        <input type="text" class="form-control" placeholder="State" disabled>
+                        @Html.DropDownListFor(model => model.CurrentAddress.StateId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster), "Id", "Name"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
                     </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Pin Code</label>
-                        <input type="text" class="form-control" disabled>
+                    <div class="form-group col-md-3">
+                        <label for="inputState">State</label>
+                        @Html.DropDownListFor(model => model.PermanentAddress.CountryId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CountryMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputZip">Pincode</label>
+                        <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentAddress.Pin)" disabled>
                     </div>
                 </div>
+            </div>
+            <div class="">
             </div>
             @*border border-info rounded*@
-            <div class="form-group  col-md-5">
-                <div class="form-row">
-                    <label for="inputAddress">Permanent Address</label>
-                    <textarea type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.PeremenantAddress)" disabled></textarea>
-                </div>
-                <div class="form-row pt-2">
-                    <div class="form-group col-md-5">
-                        <label for="inputCity">City</label>
-                        <input type="text" class="form-control" placeholder="City" disabled>
+            @{
+                if (!(Model.PermanentAddress == null))
+                {
+                    <div class="form-group  col-4">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="inputAddress">Permanent Address</label>
+                                <textarea type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.PermanentAddress.AddressLine)" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">City</label>
+                                @Html.DropDownListFor(model => model.PermanentAddress.CityId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CityMaster), "Id", "Name"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">State</label>
+                                @Html.DropDownListFor(model => model.PermanentAddress.StateId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.StateMaster), "Id", "Name"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">State</label>
+                                @Html.DropDownListFor(model => model.PermanentAddress.CountryId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CountryMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputZip">Pincode</label>
+                                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.PermanentAddress.Pin)" disabled>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-5">
-                        <label for="inputState">State</label>
-                        <input type="text" class="form-control" placeholder="State" disabled>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Pin Code</label>
-                        <input type="text" class="form-control" disabled>
-                    </div>
-                </div>
-            </div>
+                }
+            }
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="inputEmail4">Aadhar Card</label>
                 <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.AadharId)" disabled>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label for="inputPassword4">Phone</label>
                 <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.Phone)" disabled>
             </div>
@@ -136,16 +151,15 @@
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="inputEmail4">Religion</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.Religion)" disabled>
+                @Html.DropDownListFor(model => model.ReligionId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.ReligionMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
             <div class="form-group col-md-2">
-                "
                 <label for="inputPassword4">Cast</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.Caste)" disabled>
+                @Html.DropDownListFor(model => model.CasteId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CasteMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
             <div class="form-group col-md-2">
                 <label for="inputPassword4">Category</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.Category)" disabled />
+                @Html.DropDownListFor(model => model.CategoryId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.CategoryMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
         </div>
         <div class="form-row">
@@ -161,13 +175,15 @@
                 <label for="inputPassword4">Parent Email</label>
                 <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ParentEmailId)" disabled />
             </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="inputPassword4">Parent Occupation</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ParentOccupation)" disabled>
+                @Html.DropDownListFor(model => model.ParentOccupationId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.OccupationMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
             <div class="form-group col-md-2">
                 <label for="inputPassword4">RelationShip</label>
-                <input type="text" class="form-control" placeholder="@Html.DisplayFor(model => model.ParentRelationship)" disabled>
+                @Html.DropDownListFor(model => model.ParentOccupationId, new SelectList(CachingService.GetCachedDataByKey(CacheKeyConstants.OccupationMaster), "Text", "Value"), new { @class = "form-control selectpicker", @data_size = "5", @data_flip = "false", @data_display = "static", @disabled = "disabled" })
             </div>
         </div>
         <div class="form-row">
@@ -178,9 +194,9 @@
         </div>
     </form>
     <p>
-        @Html.ActionLink("Edit", "Edit", null, new { id = Model.Id }, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Delete", "Delete", null, new { id = Model.Id }, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Back", "List", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Edit", "Edit", "ProspectStudent", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Delete", "Delete", "ProspectStudent", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back", "List", "ProspectStudent", new { @class = "btn btn-primary" })
     </p>
 </div>
 

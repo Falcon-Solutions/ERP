@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Falcon.DataAceess.DataRepository;
+using Falcon.Entity;
 using Falcon.Entity.Address;
 using Falcon.Entity.Prospect;
 using System;
@@ -20,7 +21,7 @@ namespace Falcon.DataAceess.ProspectRepository
             dataAccess = repository.FalconDataAccess;
         }
 
-        public List<ProspectStudentModel> GetAllProspectStudent()
+        public List<AppliedProspectModel> GetAllProspectStudent()
         {
             string tableNames = "AllProspectStudents";
 
@@ -37,16 +38,16 @@ namespace Falcon.DataAceess.ProspectRepository
 
             var result = dataAccess.GetDataTable(commandText, CommandType.Text, tableNames);
 
-            List<ProspectStudentModel> prospectStudents = new List<ProspectStudentModel>();
+            List<AppliedProspectModel> prospectStudents = new List<AppliedProspectModel>();
 
             if (result != null && result.Rows.Count > 0)
             {
                 foreach (DataRow row in result.Rows)
                 {
-                    prospectStudents.Add(new ProspectStudentModel
+                    prospectStudents.Add(new AppliedProspectModel
                     {
                         Id = Int32.Parse(row["myId"].ToString()),
-                        Name = string.Concat(row["FirstName"].ToString(), " ",row["MiddleName"].ToString(), " ", row["LastName"].ToString()),
+                        Name = string.Concat(row["FirstName"].ToString(), " ", row["MiddleName"].ToString(), " ", row["LastName"].ToString()),
                         ApplicationNumber = row["ApplicationNo"].ToString(),
                         ApplicationDate = DateTime.Parse(row["ApplicationDate"].ToString()),
                         AdmissionStatus = row["AdmissionStatus"].ToString(),
@@ -57,57 +58,95 @@ namespace Falcon.DataAceess.ProspectRepository
             return prospectStudents;
         }
 
-        public ViewProspectStudentModel ViewProspectStudent(int applicationId)
+        public ProspectModel GetProspect(int applicationId)
         {
-            string tableName = "prospectStudentTable";
+            ProspectModel prospectStudent = null;
 
-            DalParameterList dalParam = new DalParameterList();
-
-            dalParam.Add(new DalParameter()
+            try
             {
-                ParameterName = "@Id",
-                ParameterValue = applicationId,
-                ParameterDirection = ParameterDirection.Input,
-                ParameterType = SqlDbType.Int
-            });
+                string[] tableNames = { "prospectStudentTable", "AddressTable" };
 
-            var result = dataAccess.GetDataTable(StoredProcedureConstants.GetProspectStudentById, CommandType.StoredProcedure, dalParam, tableName);
+                DalParameterList dalParam = new DalParameterList();
 
-            ViewProspectStudentModel prospectStudent = null;
+                dalParam.Add(new DalParameter()
+                {
+                    ParameterName = "@Id",
+                    ParameterValue = applicationId,
+                    ParameterDirection = ParameterDirection.Input,
+                    ParameterType = SqlDbType.Int
+                });
 
-            if (result != null && result.Rows.Count > 0)
-            {
-                prospectStudent = new ViewProspectStudentModel();
+                var result = dataAccess.GetDataSet(StoredProcedureConstants.GetProspectStudentById, CommandType.StoredProcedure, dalParam, tableNames);
 
-                prospectStudent.Id = Int32.Parse(result.Rows[0]["myId"].ToString());
-                prospectStudent.FirstName = result.Rows[0]["FirstName"].ToString();
-                prospectStudent.MiddleName = result.Rows[0]["MiddleName"].ToString();
-                prospectStudent.LastName = result.Rows[0]["LastName"].ToString();
-                prospectStudent.ApplicationNumber = result.Rows[0]["ApplicationNo"].ToString();
-                prospectStudent.ApplicationDate = Convert.ToDateTime(result.Rows[0]["ApplicationDate"].ToString());
-                prospectStudent.AadharId = result.Rows[0]["AadharId"].ToString();
-                prospectStudent.ClassName = result.Rows[0]["Class"].ToString();
-                prospectStudent.Gender = result.Rows[0]["Sex"].ToString();
-                prospectStudent.DoB = Convert.ToDateTime(result.Rows[0]["DOB"].ToString());
-                prospectStudent.Phone = result.Rows[0]["Phone"].ToString();
-                prospectStudent.Email = result.Rows[0]["EmailId"].ToString();
-                prospectStudent.CompleteCurrentAddress = result.Rows[0]["CurrentAddress"].ToString();
-                prospectStudent.CompletePermanentAddress = result.Rows[0]["PermanentAddress"].ToString();
-                prospectStudent.Religion = result.Rows[0]["religion"].ToString();
-                prospectStudent.Caste = result.Rows[0]["caste"].ToString();
-                prospectStudent.Category = result.Rows[0]["category"].ToString();
-                prospectStudent.BloodGrp = result.Rows[0]["BloodGroup"].ToString();
-                prospectStudent.AdmissionStatus = result.Rows[0]["AdmissionStatus"].ToString();
-                prospectStudent.FullName = string.Concat(result.Rows[0]["FirstName"].ToString(), " ", result.Rows[0]["MiddleName"].ToString(), " ", result.Rows[0]["LastName"].ToString());
-                prospectStudent.Notes = result.Rows[0]["Notes"].ToString();
-                prospectStudent.ParentEmailId = result.Rows[0]["ParentEmailId"].ToString();
-                prospectStudent.ParentName = result.Rows[0]["ParentName"].ToString();
-                prospectStudent.ParentOccupation = result.Rows[0]["ParentOccupation"].ToString();
-                prospectStudent.ParentPhone = result.Rows[0]["ParentPhone"].ToString();
-                prospectStudent.ParentRelationship = result.Rows[0]["ParentRelationship"].ToString();
+                if (result != null && result.Tables.Count == 2)
+                {
+                    if (result.Tables[0].Rows.Count > 0 && result.Tables[1].Rows.Count > 0)
+                    {
+                        var addresses = result.Tables["AddressTable"].AsEnumerable()
+                                                .Select(row => new AddressDetails()
+                                                {
+                                                    Id = row.Field<int>("AddressId"),
+                                                    AddressLine = row.Field<string>("AddressLine"),
+                                                    CityId = row.Field<int>("CityId"),
+                                                    StateId = row.Field<int>("StateId"),
+                                                    CountryId = row.Field<int>("CountryId"),/*Convert.ToInt32(row.Field<decimal>("Strength"))*/
+                                                    Pin = row.Field<string>("Pincode"),
+                                                    AddressType = row.Field<string>("AddressType"),
+                                                }).ToList();
+
+                        prospectStudent = new ProspectModel();
+                        prospectStudent.Id = result.Tables["prospectStudentTable"].Rows[0].Field<int>("myId");
+                        prospectStudent.ApplicationNumber = result.Tables["prospectStudentTable"].Rows[0].Field<string>("applicationno");
+                        prospectStudent.ApplicationDate = result.Tables["prospectStudentTable"].Rows[0].Field<DateTime>("ApplicationDate");
+                        prospectStudent.FirstName = result.Tables["prospectStudentTable"].Rows[0].Field<string>("firstname");
+                        prospectStudent.MiddleName = result.Tables["prospectStudentTable"].Rows[0].Field<string>("middlename");
+                        prospectStudent.LastName = result.Tables["prospectStudentTable"].Rows[0].Field<string>("lastname");
+                        prospectStudent.AadharId = result.Tables["prospectStudentTable"].Rows[0].Field<string>("AadharId");
+                        prospectStudent.AdmissionStatusId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("AdmissionStatusId");
+                        prospectStudent.BloodGrpId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("BloodGrpId");
+                        prospectStudent.CasteId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("CasteId");
+                        prospectStudent.CategoryId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("CategoryId");
+                        prospectStudent.ClassId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("ClassId");
+                        prospectStudent.DoB = result.Tables["prospectStudentTable"].Rows[0].Field<DateTime>("DOB");
+                        prospectStudent.Email = result.Tables["prospectStudentTable"].Rows[0].Field<string>("emailid");
+                        prospectStudent.GenderId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("GenderId");
+                        prospectStudent.IsPermanentSameAsCurrent = result.Tables["prospectStudentTable"].Rows[0].Field<bool>("IsCurrPermSame");
+                        prospectStudent.Notes = result.Tables["prospectStudentTable"].Rows[0].Field<string>("Notes");
+                        prospectStudent.ParentEmailId = result.Tables["prospectStudentTable"].Rows[0].Field<string>("ParentEmailId");
+                        prospectStudent.ReligionId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("ReligionId");
+                        prospectStudent.Phone = result.Tables["prospectStudentTable"].Rows[0].Field<string>("phone");
+                        prospectStudent.ParentRelationshipId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("ParentRelationshipId");
+                        prospectStudent.ParentPhone = result.Tables["prospectStudentTable"].Rows[0].Field<string>("ParentPhone");
+                        prospectStudent.ParentOccupationId = result.Tables["prospectStudentTable"].Rows[0].Field<int>("ParentOccupationId");
+                        prospectStudent.ParentName = result.Tables["prospectStudentTable"].Rows[0].Field<string>("ParentName");
+
+                        prospectStudent.CurrentAddress = (from address in addresses
+                                                          where address.AddressType == AddressType.Current.ToString()
+                                                          select address).First();
+
+                        if (addresses.Exists(x => x.AddressType == AddressType.Permanent.ToString()))
+                        {
+
+
+                            prospectStudent.PermanentAddress = (from address in addresses
+                                                                where address.AddressType == AddressType.Permanent.ToString()
+                                                                select address).First();
+                        }
+                        else
+                        {
+                            prospectStudent.PermanentAddress = null;
+                        }
+
+                    }
+                }
+
+                return prospectStudent;
             }
+            catch (Exception ex)
+            {
 
-            return prospectStudent;
+                throw;
+            }
         }
 
         public bool AddProspectStudent(DataSet dataSet)
@@ -126,20 +165,25 @@ namespace Falcon.DataAceess.ProspectRepository
 
                 dalParam.Add(new DalParameter()
                 {
-                    ParameterName = "@ClassXref",
+                    ParameterName = "@NewProspect",
                     ParameterValue = dataSet.Tables["Prospect"],
                     ParameterType = SqlDbType.Structured
                 });
 
-                dataAccess.ExecuteNonQuery(StoredProcedureConstants.UpdateClassConfiguration, CommandType.StoredProcedure, dalParam);
-                var isSuccess = Convert.ToBoolean(dalParam.Where(x => x.ParameterName == "@IsSuccess").First().ParameterValue);
+                dalParam.Add(new DalParameter()
+                {
+                    ParameterName = "@Address",
+                    ParameterValue = dataSet.Tables["Address"],
+                    ParameterType = SqlDbType.Structured
+                });
+
+                dataAccess.ExecuteNonQuery(StoredProcedureConstants.AddNewProspect, CommandType.StoredProcedure, dalParam);
+                return Convert.ToBoolean(dalParam.Where(x => x.ParameterName == "@IsSuccess").First().ParameterValue);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                return false;
             }
-            return true;
         }
 
         public bool UpdateProspectStudent(DataSet dataSet)

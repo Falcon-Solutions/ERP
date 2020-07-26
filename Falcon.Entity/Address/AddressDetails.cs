@@ -15,6 +15,7 @@ namespace Falcon.Entity.Address
         public int CountryId { get; set; }
         public string Pin { get; set; }
         public string AddressType { get; set; }
+        public FormAction Action { get; set; }
     }
 
     public class City
